@@ -3,21 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Product Design Game Home</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"/>
     <link rel="stylesheet" href="/css/style.css" >
+    <script src="/js/main.js"></script>
 </head>
 <body>
     <main class="container">
         <!-- Navbar which can be reused across other pages -->
         <%- include('../partials/navbar'); %>
 
-        <!-- Information welcoming visitors to my page -->
-        <div class="welcome-container">
-            <h1>Welcome to my blog</h1>
-            <h2>Learn about what happened in my day!</h2>
+        <!-- Welcome information -->
+        <div class="topline-container">
+            <h1>Welcome to Product Design Game</h1>
+            <p>Your mission, should you choose to accept it, is to navigate a product design journey. Acting as a the product manager placed in charge of a new web app, your goal is to get the web app to the best possible start in its first 30 days. </p>
+            <p>We will be tracking how well your process choices allow your team to understand the problem statement and solve the customer's needs and pain points within the constraints</p>
+            <p>Space for more tutorial points here</p>
+            <a onClick="resetVariables()" class="button" role="button">Start</a>
         </div>
 
+        <!-- Setup 20 button options -->
+        <!-- Setup series of descending days dialogues for filling -->
+
+        
         <div class="new-post-btn-container">
            <a href="/new" class="button" role="button">+ New Post</a>
         </div>
