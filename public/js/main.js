@@ -1,4 +1,5 @@
 function resetVariables(){
+    //declare and reset all gamestate variables
     sessionStorage.setItem("GameStart", true)
     sessionStorage.setItem("DayX",0)
     sessionStorage.setItem("BusinessOwnerConfidence",50)
@@ -15,5 +16,14 @@ function resetVariables(){
     sessionStorage.setItem("PaperProto",false)
     sessionStorage.setItem("FigmaProto",false)
     sessionStorage.setItem("ClickableProto",false)
-    alert("Hello everyone "+ sessionStorage.getItem("BusinessOwnerConfidence"));
+    //call once to show health variables
+    showHealth()
 }
+
+function showHealth(){
+    //debugger alert
+    alert("Hello everyone");
+    //update all health variables one by one
+    document.getElementById("days-elapsed").textContent=sessionStorage.getItem("BusinessOwnerConfidence")
+}
+

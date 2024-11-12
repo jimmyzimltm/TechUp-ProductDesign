@@ -5,6 +5,15 @@
     margin-bottom: 50px;
 }
 
+.health-display-container {
+    max-width: 800px;
+
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .new-post-btn-container{
     text-align: center;
 
