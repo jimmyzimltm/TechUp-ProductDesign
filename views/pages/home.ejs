@@ -29,36 +29,43 @@
         <div class="topline-container">
             <h1>Welcome to Product Design Game</h1>
             <p>Your mission, should you choose to accept it, is to navigate a product design journey. Acting as a the product manager placed in charge of a new web app, your goal is to get the web app to the best possible start in its first 30 days. </p>
-            <p>We will be tracking how well your process choices allow your team to understand the problem statement and solve the customer's needs and pain points within the constraints</p>
-            <p>Space for more tutorial points here</p>
             <!-- TODO: Start by telling us your name -->
-            <a onClick="resetVariables()" class="button" role="button">Start</a>
+            <a onClick="resetVariables()" class="button" role="button" id="startButton">Start</a>
         </div>
 
         <!-- This is the health-status display, that shows that the player's status is on various top indicators -->
         <div class="health-display-container">
         <!-- TODO: To add icons and beautify -->
+        These 6 indicators track how well you are doing towards delivering a solution for the customer. 
         <Table>
         <Tr>
-            <TD colspan=2 class="statusdisplay"> <H4>Deadline</H4> </TD>
-            <TD colspan=2 class="statusdisplay"> <H4>Clarity</H4> </TD>
-            <TD colspan=2 class="statusdisplay"> <H4>Confidence</H4> </TD>
+            <TD colspan=2 class="statusdisplay"> <H6>Deadline</H6> </TD>
+            <TD colspan=2 class="statusdisplay"> <H6>Solutioning</H6> </TD>
+            <TD colspan=2 class="statusdisplay"> <H6>Confidence</H6> </TD>
         </Tr>
         <Tr>
             <TD class="statusdisplay"> Days elapsed <span id="days-elapsed">0</span> </TD>
             <TD class="statusdisplay"> Product Readiness <span id="product-readiness">None</span> </TD>
-            <TD class="statusdisplay"> Problem Statement Clarity <span id="problem-statement-clarity">0</span>/100 </TD>
-            <TD class="statusdisplay"> Customer Insight <span id="customer-insight">0</span>/100 </TD>
-            <TD class="statusdisplay"> Team Morale <span id="team-morale">50</span>/100</TD>
-            <TD class="statusdisplay"> Business Owner Confidence <span id="business-owner-confidence">50</span>/100</TD>
+            <TD class="statusdisplay"> Problem Statement Clarity <span id="problem-statement-clarity">-</span>/100 </TD>
+            <TD class="statusdisplay"> Customer Insight <span id="customer-insight">-</span>/100 </TD>
+            <TD class="statusdisplay"> Team Morale <span id="team-morale">-</span>/100</TD>
+            <TD class="statusdisplay"> Business Owner Confidence <span id="business-owner-confidence">-</span>/100</TD>
         </Tr>
         </Table>
         </div>
 
+
+        <article class="event-container" id="mostrecent">
+            <header>
+                <h4></h4>
+            </header>
+                <p></p>
+        </article>
+
         <!-- This is where we park the buttons every time -->
         <div class="process-menu-container" id="processmenu">
          <!-- Setup button options --> 
-        What do you wish to do next?
+        <H4>What do you wish to do next?</H4>
          <table>
             <TR>
                 <TD>Build paper prototype</TD>
@@ -67,7 +74,7 @@
                 <TD>Build MVP web app</TD>
             </TR>
             <TR>
-                <TD>Interview policy owner</TD>
+                <TD><a onClick="interviewPolicyOwner()" class="button" role="button" id="policyownerButton">Interview policy owner</a></TD>
                 <TD>Interview ground-facing division</TD>
                 <TD>Conduct FGDs with Customers</TD>
                 <TD>(TBD)</TD>
@@ -90,23 +97,212 @@
 
 
 
-        <!-- Setup series of descending days dialogues for filling. Set all to be blank at the start; these will be filled one at a time as we play, scrolling to the top-->
-         
-        <article class="event-container" id="3">
+        <!-- Setup series of descending days dialogues for filling. We used CSS to set all to hidden, at the start; these will be filled one at a time as we play, scrolling to the top-->
+        <article class="event-container" id="event30">
+            <header>
+                <h4></h4>
+            </header>
+                <p></p>
+        </article>
+
+        <article class="event-container" id="event29">
+            <header>
+                <h4></h4>
+            </header>
+                <p></p>
+        </article>
+
+        <article class="event-container" id="event28">
+            <header>
+                <h4></h4>
+            </header>
+                <p></p>
+        </article>
+
+        <article class="event-container" id="event27">
+            <header>
+                <h4></h4>
+            </header>
+                <p></p>
+        </article>
+
+        <article class="event-container" id="event26">
+            <header>
+                <h4></h4>
+            </header>
+                <p></p>
+        </article>
+
+        <article class="event-container" id="event25">
+            <header>
+                <h4></h4>
+            </header>
+                <p></p>
+        </article>
+
+        <article class="event-container" id="event24">
+            <header>
+                <h4></h4>
+            </header>
+                <p></p>
+        </article>
+
+        <article class="event-container" id="event23">
             <header>
                 <h4></h4>
             </header>
                 <p></p>
         </article>
         
-        <article class="event-container" id="2">
+        <article class="event-container" id="event22">
             <header>
                 <h4></h4>
             </header>
                 <p></p>
         </article>
         
-        <article class="event-container" id="1">
+        <article class="event-container" id="event21">
+            <header>
+                <h4></h4>
+            </header>
+                <p></p>
+        </article>
+
+        <article class="event-container" id="event20">
+            <header>
+                <h4></h4>
+            </header>
+                <p></p>
+        </article>
+
+        <article class="event-container" id="event19">
+            <header>
+                <h4></h4>
+            </header>
+                <p></p>
+        </article>
+
+        <article class="event-container" id="event18">
+            <header>
+                <h4></h4>
+            </header>
+                <p></p>
+        </article>
+
+        <article class="event-container" id="event17">
+            <header>
+                <h4></h4>
+            </header>
+                <p></p>
+        </article>
+
+        <article class="event-container" id="event16">
+            <header>
+                <h4></h4>
+            </header>
+                <p></p>
+        </article>
+
+        <article class="event-container" id="event15">
+            <header>
+                <h4></h4>
+            </header>
+                <p></p>
+        </article>
+
+        <article class="event-container" id="event14">
+            <header>
+                <h4></h4>
+            </header>
+                <p></p>
+        </article>
+
+        <article class="event-container" id="event13">
+            <header>
+                <h4></h4>
+            </header>
+                <p></p>
+        </article>
+        
+        <article class="event-container" id="event12">
+            <header>
+                <h4></h4>
+            </header>
+                <p></p>
+        </article>
+        
+        <article class="event-container" id="event11">
+            <header>
+                <h4></h4>
+            </header>
+                <p></p>
+        </article>
+        
+
+        <article class="event-container" id="event10">
+            <header>
+                <h4></h4>
+            </header>
+                <p></p>
+        </article>
+
+        <article class="event-container" id="event9">
+            <header>
+                <h4></h4>
+            </header>
+                <p></p>
+        </article>
+
+        <article class="event-container" id="event8">
+            <header>
+                <h4></h4>
+            </header>
+                <p></p>
+        </article>
+
+        <article class="event-container" id="event7">
+            <header>
+                <h4></h4>
+            </header>
+                <p></p>
+        </article>
+
+        <article class="event-container" id="event6">
+            <header>
+                <h4></h4>
+            </header>
+                <p></p>
+        </article>
+
+        <article class="event-container" id="event5">
+            <header>
+                <h4></h4>
+            </header>
+                <p></p>
+        </article>
+
+        <article class="event-container" id="event4">
+            <header>
+                <h4></h4>
+            </header>
+                <p></p>
+        </article>
+
+        <article class="event-container" id="event3">
+            <header>
+                <h4></h4>
+            </header>
+                <p></p>
+        </article>
+        
+        <article class="event-container" id="event2">
+            <header>
+                <h4></h4>
+            </header>
+                <p></p>
+        </article>
+        
+        <article class="event-container" id="event1">
             <header>
                 <h4></h4>
             </header>

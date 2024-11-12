@@ -1,8 +1,8 @@
 .topline-container {
     text-align: center;
 
-    margin-top: 50px;
-    margin-bottom: 50px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .health-display-container {
@@ -25,11 +25,22 @@
     margin-right: auto;
 }
 
-.event-container{
-    text-align: center
+#processmenu{
+    display: none; /* The menu is hidden until start is pressed are met */
 }
 
 
+.event-container{
+    text-align: center;
+    display: none; /* The menu is hidden until conditions are met */
+}
+
+.health-status-growth{
+    color: green
+}
+.health-status-loss{
+    color: red
+}
 .new-post-btn-container{
     text-align: center;
 
