@@ -7,7 +7,19 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"/>
     <link rel="stylesheet" href="/css/style.css" >
     <script src="/js/main.js"></script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-M0NXM8FB79"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-M0NXM8FB79');
+    </script>
+
 </head>
+
 <body>
     <main class="container">
         <!-- Navbar which can be reused across other pages -->
@@ -19,11 +31,13 @@
             <p>Your mission, should you choose to accept it, is to navigate a product design journey. Acting as a the product manager placed in charge of a new web app, your goal is to get the web app to the best possible start in its first 30 days. </p>
             <p>We will be tracking how well your process choices allow your team to understand the problem statement and solve the customer's needs and pain points within the constraints</p>
             <p>Space for more tutorial points here</p>
+            <!-- TODO: Start by telling us your name -->
             <a onClick="resetVariables()" class="button" role="button">Start</a>
         </div>
-        <!-- Setup health display -->
+
+        <!-- This is the health-status display, that shows that the player's status is on various top indicators -->
         <div class="health-display-container">
-        <!-- TODO: Too add icons and beautify -->
+        <!-- TODO: To add icons and beautify -->
         <Table>
         <Tr>
             <TD colspan=2 class="statusdisplay"> <H4>Deadline</H4> </TD>
@@ -39,11 +53,65 @@
             <TD class="statusdisplay"> Business Owner Confidence <span id="business-owner-confidence">50</span>/100</TD>
         </Tr>
         </Table>
-
-
         </div>
-        <!-- Setup 20 button options -->
-        <!-- Setup series of descending days dialogues for filling -->
+
+        <!-- This is where we park the buttons every time -->
+        <div class="process-menu-container" id="processmenu">
+         <!-- Setup button options --> 
+        What do you wish to do next?
+         <table>
+            <TR>
+                <TD>Build paper prototype</TD>
+                <TD>Build figma prototype</TD>
+                <TD>Build clickable prototype</TD>
+                <TD>Build MVP web app</TD>
+            </TR>
+            <TR>
+                <TD>Interview policy owner</TD>
+                <TD>Interview ground-facing division</TD>
+                <TD>Conduct FGDs with Customers</TD>
+                <TD>(TBD)</TD>
+            </TR>
+            <TR>
+                <TD>Observe customers in natural environment</TD>
+                <TD>Hypothesise solution</TD>
+                <TD>Identify critical assumption to test</TD>
+                <TD>Consolidate findings</TD>
+            </TR>
+            <TR>
+                <TD>Write Problem Statement</TD>
+                <TD>Write Interview/Test Guide</TD>
+                <TD>(TBD)</TD>
+                <TD>(TBD)</TD>
+            </TR>
+          </table>   
+        </div>
+
+
+
+
+        <!-- Setup series of descending days dialogues for filling. Set all to be blank at the start; these will be filled one at a time as we play, scrolling to the top-->
+         
+        <article class="event-container" id="3">
+            <header>
+                <h4></h4>
+            </header>
+                <p></p>
+        </article>
+        
+        <article class="event-container" id="2">
+            <header>
+                <h4></h4>
+            </header>
+                <p></p>
+        </article>
+        
+        <article class="event-container" id="1">
+            <header>
+                <h4></h4>
+            </header>
+                <p></p>
+        </article>
 
         
         <div class="new-post-btn-container">
