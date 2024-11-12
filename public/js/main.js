@@ -11,6 +11,7 @@ function resetVariables(){
     sessionStorage.setItem("ProductReadiness","None")
 
     sessionStorage.setItem("InterviewedPolicyOwner",0)
+    sessionStorage.setItem("InterviewedGroundDivision",0)
 
     sessionStorage.setItem("CustomerInterviews",0)
     sessionStorage.setItem("TeamSize",1)
@@ -123,7 +124,7 @@ function interviewPolicyOwner(){
     advancetheDay();
     // get the current day
     var dayX=+sessionStorage.getItem("DayX")
-    //    select Article with ID 1
+    //    select Article with ID mostrecent
     var article = document.getElementById("mostrecent");
     // change the header to reflect current Day
     var header = article.querySelector("header h4");
@@ -160,10 +161,11 @@ function interviewPolicyOwner(){
             paragraph.innerHTML +="<p class='health-status-growth'>Problem Statement Clarity + 10</p>"
             changeSSV("ProblemStatementClarity", 10)           
         }
-
+        //either way, store the current customer insight level as the variable for when we last interviewed the policy owner
+            sessionStorage.setItem("InterviewedPolicyOwner",sessionStorage.getItem("CustomerInsight"))
     } else {
         // check level of customer insight
-        if (CustomerInsight>50){
+        if ((CustomerInsight-InterviewedPolicyOwner)>20){
             // Good response - policy owner responds well to new insights, and clarifies their problem statement. Builds BOC and Morale
             paragraph.textContent =" 'Those are really interesting learning points. Jeannette is surprised by the insights you have unearthed and digs into the evidence you have assembled. She quickly regroups and lays out her thinking for how the web app should take these new learnings into account "
             paragraph.innerHTML +="<p class='health-status-growth'>Problem Statement Clarity + 10</p>"
@@ -183,9 +185,74 @@ function interviewPolicyOwner(){
         var buttontodisable = document.getElementById("policyownerButton");    
         buttontodisable.style.display = "none"
     }
-    // Cleaunup option availability
+    // update the health status
+    updateHealth()
+}
 
-
+function interviewGroundDivision(){
+    // move the mostrecent day into the past and increment the dayX
+    advancetheDay();
+    // get the current day
+    var dayX=+sessionStorage.getItem("DayX")
+    //    select Article with ID mostrecent
+    var article = document.getElementById("mostrecent");
+    // change the header to reflect current Day
+    var header = article.querySelector("header h4");
+    var paragraph = article.querySelector("p")
+    header.textContent = "Day " + dayX;
+    
+    // resolve result of ground Division interview. Check conditionals
+    // Pathing - has the team interviewed ground owner before? Has the team interviewed policy owner?  Has the team developed solutions or interviewed customer already?
+    // First conditional - has the team interviewed policy owner already? 
+    var InterviewedGroundDivision =     +sessionStorage.getItem("InterviewedGroundDivision")
+    var CustomerInsight = +sessionStorage.getItem("CustomerInsight")
+    if (InterviewedGroundDivision ==0){
+        // check early or late
+        if (dayX<5){
+            // Good response - interview yields insights about problem statement and customer insight, builds business owner confidence and team morale
+            paragraph.innerHTML ="<p>You interview the Business Owner, Jeannette. The interview goes well. Jeannette shares deeper insights into the problems the policy team were seeing on the ground as well as their thoughts about customer behavior on the ground. Jeannette suggests you speak to the ground team to hear more about their experiences with customers as well.</p>"
+            paragraph.innerHTML +="<p class='health-status-growth'>Problem Statement Clarity + 20, Customer Insight +10</p>"
+            changeSSV("ProblemStatementClarity", 20)
+            changeSSV("CustomerInsight",10)
+            // sessionStorage.setItem("CustomerInsight",+sessionStorage.getItem("CustomerInsight")+10)
+            paragraph.innerHTML +="<p> At the end of the meeting, Jeannette shares that she is happy that the team had come to speak with her. After the meeting, Andrea tells you she has gained confidence in the project.</p>"
+            paragraph.innerHTML +="<p class='health-status-growth'>Business Owner Confidence + 10, Team Morale +10</p>"
+            changeSSV("BusinessOwnerConfidence", 10)
+            changeSSV("TeamMorale",10)
+            // sessionStorage.setItem("BusinessOwnerConfidence",+sessionStorage.getItem("BusinessOwnerConfidence")+10)
+            // sessionStorage.setItem("TeamMorale",+sessionStorage.getItem("TeamMorale")+10)
+        } else {
+            // Bad response - business owner scolds you for coming to her so late. Still gets some insight about problem statement and customer insight, but loses business owner confidence and team morale
+            paragraph.innerHTML ="<p>You interview the Business Owner, Jeannette. The interview starts poorly. Jeannette shares her disappointment that you had delayed speaking to her and wonders aloud what you could possibly have been doing. Andrea is visibly shaken by her comments</p>"
+            paragraph.innerHTML +="<p class='health-status-loss'>Business Owner Confidence - 10, Team Morale - 10</p>"
+            changeSSV("BusinessOwnerConfidence", -10)
+            changeSSV("TeamMorale",-10)
+            paragraph.innerHTML +="<p> After she overcomes her anger, Jeannette shares some insights into the problems the policy team were seeing on the ground. While she still gives you more clarity about the problem statement, she seems very impatient and ends the meeting early. You cannot help but feel that some important information was left unsaid. </p>"
+            paragraph.innerHTML +="<p class='health-status-growth'>Problem Statement Clarity + 10</p>"
+            changeSSV("ProblemStatementClarity", 10)           
+        }
+    } else {
+        // check level of customer insight
+        if ((CustomerInsight-InterviewedPolicyOwner)>20){
+            // Good response - policy owner responds well to new insights, and clarifies their problem statement. Builds BOC and Morale
+            paragraph.textContent =" 'Those are really interesting learning points. Jeannette is surprised by the insights you have unearthed and digs into the evidence you have assembled. She quickly regroups and lays out her thinking for how the web app should take these new learnings into account "
+            paragraph.innerHTML +="<p class='health-status-growth'>Problem Statement Clarity + 10</p>"
+            changeSSV("ProblemStatementClarity", 10)
+        } else{
+            // Bad response - why are you wasting my time!
+            paragraph.textContent =" 'I thought I just saw you recently?' Jeannette is confused and surprised why you have come to see her again when you have no new insights to add, and chews you and the entire team out for wasting her time"
+            paragraph.innerHTML +="<p class='health-status-loss'>Business Owner Confidence - 10, Team Morale - 10</p>"
+            changeSSV("BusinessOwnerConfidence", -10)
+            changeSSV("TeamMorale",-10)
+        }
+    }
+    // Regardless, increment InterviewedPolicyOwner, store it, 
+    changeSSV("InterviewedPolicyOwner", 1)
+    // disable Interview after 2nd interview 
+    if (sessionStorage.getItem("InterviewedPolicyOwner")=="2"){
+        var buttontodisable = document.getElementById("policyownerButton");    
+        buttontodisable.style.display = "none"
+    }
     // update the health status
     updateHealth()
 }
