@@ -15,14 +15,14 @@ function resetVariables(){
     sessionStorage.setItem("WrittenProblemStatement",0)
     sessionStorage.setItem("ObservedCustomers",0)
     sessionStorage.setItem("PaperProto",0)
-    sessionStorage.setItem("CriticalAssumption",0)    
+     
     
     sessionStorage.setItem("CustomerInterviews",0)
     sessionStorage.setItem("EngineersHired",false)
 
     
-    sessionStorage.setItem("FigmaProto",false)
-    sessionStorage.setItem("ClickableProto",false)
+    sessionStorage.setItem("FigmaProto",0)
+    sessionStorage.setItem("ClickableProto",0)
     //call once to show health variables
     updateHealth()
 //clean up / wipe all articles as well, so that the Start button acts as reset as well
@@ -41,7 +41,8 @@ for (let eventday=1; eventday<31; eventday++) {
 // Show the process menu
     var hiddenDiv=document.getElementById("processmenu")
     hiddenDiv.style.display='block';
-    
+
+// reset initial button states
     var buttontoenable = document.getElementById("policyownerButton");    
     buttontoenable.style.display = "block"
     buttontoenable = document.getElementById("grounddivisionButton");    
@@ -49,6 +50,8 @@ for (let eventday=1; eventday<31; eventday++) {
     buttontoenable = document.getElementById("observationButton");    
     buttontoenable.style.display = "block"
 
+    var buttontodisable = document.getElementById("plantestButton");    
+    buttontodisable.style.display = "none"
     document.getElementById("startButton").textContent = "Go back to Day 1";
 
 // Kick off Day 1 
@@ -445,43 +448,73 @@ function buildPaperProto(){
             paragraph.innerHTML ="<p> You spend a day updating your paper prototype to take into account what you have learnt since you last built it.</p>"
         }
     }
-    // Set the clarity level of the PaperPrototype
+    // Set the clarity level of the PaperPrototype, and update Readiness
     ProblemStatementClarity = +sessionStorage.getItem("ProblemStatementClarity")
     CustomerInsight = +sessionStorage.getItem("CustomerInsight")
     TotalClarity = ProblemStatementClarity + CustomerInsight
     sessionStorage.setItem("PaperProto", TotalClarity)
+    sessionStorage.setItem("ProductReadiness", "Paper Prototype")
+
+    //enable the plantestbutton
+    var buttontoenable = document.getElementById("plantestButton");    
+    buttontoenable.style.display = "block"
+
     // update the health status
     updateHealth()
 }
 
 
-// function identifyCriticalAssumption(){
-//     // move the mostrecent day into the past and increment the dayX
-//     advancetheDay();
-//     // get the current day
-//     var dayX=+sessionStorage.getItem("DayX")
-//     //    select Article with ID mostrecent
-//     var article = document.getElementById("mostrecent");
-//     // change the header to reflect current Day. 
-//     var header = article.querySelector("header h4");
-//     var paragraph = article.querySelector("p")
-//     header.textContent = "Day " + dayX
-
-
+function planProtoTest(){
+    // move the mostrecent day into the past and increment the dayX
+    advancetheDay();
+    // get the current day
+    var dayX=+sessionStorage.getItem("DayX")
+    //    select Article with ID mostrecent
+    var article = document.getElementById("mostrecent");
+    // change the header to reflect current Day. Note this is a 2 day exercise
+    var header = article.querySelector("header h4");
+    var paragraph = article.querySelector("p")
+    header.textContent = "Day " + dayX
+    dayX=dayX+2
+    header.textContent += " to Day " + dayX
+    sessionStorage.setItem("DayX", dayX)
     
-//     var ProblemStatementClarity = +sessionStorage.getItem("ProblemStatementClarity")
-//     var CustomerInsight = +sessionStorage.getItem("CustomerInsight")
-//     var TotalClarity = ProblemStatementClarity + CustomerInsight
+    var ProblemStatementClarity = +sessionStorage.getItem("ProblemStatementClarity")
+    var CustomerInsight = +sessionStorage.getItem("CustomerInsight")
+    var TotalClarity = ProblemStatementClarity + CustomerInsight
 
-//     // is there a prototype to test this for?
-//     if (sessionStorage.getItem("CriticalAssumption")==TotalClarity){
+    paragraph.innerHTML ="<p> You spend 2 days planning the prototype test. This included rigorously choosing the critical assumption which you wished to test, writing interview guides to help the facilitators stay on track, and preparing selection criteria for recruitment of customers for the test .</p>"
 
-//     } else {
-//         paragraph.textContent =" You spend some time thinking through what the most critical assumption. "
-//         sessionStorage.setItem("CriticalAssumption",TotalClarity)
-//     }
-
-
-//     // update the health status
-//     updateHealth()
-// }
+    // check which prototype you are testing for and load ProtoClarity
+    var ProtoToTest = sessionStorage.getItem("ProductReadiness")
+    if (sessionStorage.getItem("ProductReadiness")=="Paper Prototype"){
+        var ProtoClarity = sessionStorage.getItem("PaperProto")
+ //       alert("Protoclarity " + ProtoClarity+" vs TotalClarity " + TotalClarity)
+        if (ProtoClarity != TotalClarity){
+            paragraph.innerHTML +="<p> You belatedly realise that you had not updated the paper prototype to take into account your latest customer insights. To fix this, you and Andrea pull an all-nighter to update the paper prototype.</p>"
+            paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 10</p>"
+            changeSSV("TeamMorale", - 10)
+            sessionStorage.setItem("PaperProto", TotalClarity)
+        }
+    } else {
+        if (sessionStorage.getItem("ProductReadiness")=="Figma Prototype"){
+            var ProtoClarity = sessionStorage.getItem("FigmaProto")
+            if (ProtoClarity != TotalClarity){
+                paragraph.innerHTML +="<p> You belatedly realise that you had not updated the paper prototype to take into account your latest customer insights. To fix this, Andrea pulls an all-nighter to update the figma prototype.</p>"
+                paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 20</p>"
+                changeSSV("TeamMorale", - 20)
+                sessionStorage.setItem("FigmaProto", TotalClarity)
+            }
+        } else {
+            var ProtoClarity = sessionStorage.getItem("ClickableProto")
+            if (ProtoClarity != TotalClarity){
+                paragraph.innerHTML +="<p> You belatedly realise that you had not updated the clickable prototype to take into account your latest customer insights. To fix this, your engineers pull an all-nighter to update the clickable prototype. They are VERY unhappy</p>"
+                paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 30</p>"
+                changeSSV("TeamMorale", - 30)
+                sessionStorage.setItem("ClickableProto", TotalClarity)
+            }
+        }
+    }
+    // update the health status
+    updateHealth()
+}
