@@ -12,6 +12,7 @@ function resetVariables(){
 
     sessionStorage.setItem("InterviewedPolicyOwner",0)
     sessionStorage.setItem("InterviewedGroundDivision",0)
+    sessionStorage.setItem("WrittenProblemStatement",0)
 
     sessionStorage.setItem("CustomerInterviews",0)
     sessionStorage.setItem("EngineersHired",false)
@@ -271,6 +272,45 @@ function interviewGroundDivision(){
     updateHealth()
 }
 
+function writeProblemStatement(){
+    // move the mostrecent day into the past and increment the dayX
+    advancetheDay();
+    // get the current day
+    var dayX=+sessionStorage.getItem("DayX")
+    //    select Article with ID mostrecent
+    var article = document.getElementById("mostrecent");
+    // change the header to reflect current Day
+    var header = article.querySelector("header h4");
+    var paragraph = article.querySelector("p")
+    header.textContent = "Day " + dayX;
+    // Pathing - has the team written the problem statement before?
+    var WrittenProblemStatement =     +sessionStorage.getItem("WrittenProblemStatement")
+    var ProblemStatementClarity = +sessionStorage.getItem("ProblemStatementClarity")
+    var CustomerInsight = +sessionStorage.getItem("CustomerInsight")
+    var TotalClarity = ProblemStatementClarity + CustomerInsight
+    if (WrittenProblemStatement ==0){
+        paragraph.textContent ="You spend some time writing down the problem statement as best as you understand it."
+        sessionStorage.setItem("WrittenProblemStatement", TotalClarity)
+        if (TotalClarity==10){
+            paragraph.innerHTML +="<p> 'I think it is quite hard to write down the problem statement when we know so little. Maybe we should speak to our stakeholders first?' Andrea seems a bit disappointed in your planning. </p>"
+            paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 10</p>"
+            changeSSV("Team Morale", -10)
+        } else {
+            paragraph.innerHTML +="<p> Spending some time to write down the problem statement helps the team to consolidate what you have learnt from different stakeholders, and gives the team more confidence</p>"
+            paragraph.innerHTML +="<p class='health-status-growth'>Team Morale + 10</p>"
+            changeSSV("Team Morale", 10)
+        }
+    } else {
+        if (ProblemStatementClarity == TotalClarity){
+            paragraph.textContent ="You do not think you have learnt anything since you last attempted your problem statement. A day passes while you struggle to rephrase your problem statement."
+        } else {
+            paragraph.textContent ="You update the problem statement with your latest learnings. This might come in useful later."
+    }
+    // update the health status
+    updateHealth()
+    }
+}
+
 
 function observeCustomers(){
     // move the mostrecent day into the past and increment the dayX
@@ -283,10 +323,13 @@ function observeCustomers(){
     var header = article.querySelector("header h4");
     var paragraph = article.querySelector("p")
     header.textContent = "Day " + dayX;
-    // Pathing - how much customerinsight and problemstatement clarity does the team have? 
-
-    // disable customerObservations
+    // Pathing - how much customerinsight and problemstatementclarity does the team have? 
+    var ProblemStatementClarity = +sessionStorage.getItem("ProblemStatementClarity")
+    var CustomerInsight = +sessionStorage.getItem("CustomerInsight")
+    var TotalClarity = ProblemStatementClarity + CustomerInsight
     
+    // disable customerObservations
+
     // update the health status
     updateHealth()
 }
