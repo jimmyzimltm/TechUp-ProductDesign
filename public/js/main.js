@@ -606,10 +606,12 @@ function testProto(){
         //     }
         // }
     }
-
-
     // reset TestPlan
     sessionStorage.setItem("WroteTestPlan",0)
+    // hide the test prototype button again
+    var buttontodisable = document.getElementById("testprotoButton");    
+    buttontodisable.style.display = "none"
+
     // update the health status
     updateHealth()
 }
