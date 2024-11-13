@@ -13,6 +13,8 @@ function resetVariables(){
     sessionStorage.setItem("InterviewedPolicyOwner",0)
     sessionStorage.setItem("InterviewedGroundDivision",0)
     sessionStorage.setItem("WrittenProblemStatement",0)
+    sessionStorage.setItem("ObservedCustomers",0)
+    sessionStorage.setItem("CriticalAssumption",0)    
 
     sessionStorage.setItem("CustomerInterviews",0)
     sessionStorage.setItem("EngineersHired",false)
@@ -183,20 +185,21 @@ function interviewPolicyOwner(){
         // check level of customer insight
         if ((CustomerInsight-InterviewedPolicyOwner)>20){
             // Good response - policy owner responds well to new insights, and clarifies their problem statement. Builds BOC and Morale
-            paragraph.textContent =" 'Those are really interesting learning points!' Jeannette is surprised by the insights you have unearthed and digs into the evidence you have assembled. She quickly regroups and lays out her thinking for how the web app should take these new learnings into account "
+            paragraph.textContent =" 'Those are really interesting learning points!' Jeannette is surprised by the insights you have unearthed and digs into the evidence you have assembled. In the ensuing discussion, she lays out her thinking for how the web app should take these new learnings into account and gives the go-ahead for you to proceed on the more refined direction. "
             paragraph.innerHTML +="<p class='health-status-growth'>Problem Statement Clarity + 10</p>"
             changeSSV("ProblemStatementClarity", 10)
+            sessionStorage.setItem("InterviewedPolicyOwner",sessionStorage.getItem("CustomerInsight"))
         } else{
-            // Bad response - why are you wasting my time!
-            paragraph.textContent =" 'I thought I just saw you recently?' Jeannette is confused and surprised why you have come to see her again when you have no new insights to add, and chews you and the entire team out for wasting her time"
+            // Bad response - why are you wasting my time?
+            paragraph.textContent =" 'I thought I just saw you recently?' Jeannette is confused and surprised why you have come to see her again when you have no new customer insights to add, and chews you and the entire team out for wasting her time"
             paragraph.innerHTML +="<p class='health-status-loss'>Business Owner Confidence - 10, Team Morale - 10</p>"
             changeSSV("BusinessOwnerConfidence", -10)
             changeSSV("TeamMorale",-10)
-        }
-        // disable Interview after 2nd interview 
-        var buttontodisable = document.getElementById("policyownerButton");    
-        buttontodisable.style.display = "none"
-        
+            // disable Interview 
+            paragraph.innerHTML +="<p> After the meeting, Patrick's PA tells you that Jeannette's PA has asked her to inform you that Jeannette has indicated that she does not wish to take any more meetings with you until you have an MVP ready. </p>"       
+            var buttontodisable = document.getElementById("policyownerButton");    
+            buttontodisable.style.display = "none"
+            }
     }
     // update the health status
     updateHealth()
@@ -265,6 +268,7 @@ function interviewGroundDivision(){
             changeSSV("BusinessOwnerConfidence", -10)
         }
         // disable Interview after 2nd interview 
+        paragraph.innerHTML +="<p> Just after you leave her office, YT's PA informs you that YT is going for a month long course and will not be available for further discussions on this project until after your MVP is complete.</p>"
         var buttontodisable = document.getElementById("grounddivisionButton");    
         buttontodisable.style.display = "none"
         
@@ -333,45 +337,54 @@ function observeCustomers(){
     var TotalClarity = ProblemStatementClarity + CustomerInsight
     var InterviewedPolicyOwner =     +sessionStorage.getItem("InterviewedPolicyOwner")
     var InterviewedGroundDivision =     +sessionStorage.getItem("InterviewedGroundDivision")
+    var ObservedCustomers = +sessionStorage.getItem("ObservedCustomers") 
 
     paragraph.textContent ="You spend some time planning your customer observations, conducting them at diverse sites, and then coming together to consolidate your findings."
     
-    
-    if (InterviewedPolicyOwner==0){
-        paragraph.innerHTML +="<p> Without deeper knowledge of the policy intention behind the product, you and Andrea do not really understand how the solution is meant to improve the customer experience. Andrea does manage to glean some findings from her observations which might be useful in future, but she is a bit worried that this round of customer observations was a waste of time.</p>"
-        paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 10, <span class='health-status-growth'> ProblemStatementClarity + 10</span></p>"
-        changeSSV("Team Morale", - 10)
-        changeSSV("ProblemStatementClarity", 10)
-        if (InterviewedGroundDivision==0){
-            paragraph.innerHTML +="<p> On top of that, some of the ground staff almost chased you off the premises because they had no idea you were coming or what you were aiming to do.</p>"
-            paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 10</p>"
-            changeSSV("TeamMorale", - 10)
-        } else {
-            paragraph.innerHTML +="<p> However, YT had briefed you on the pain points in the customer journey from the perspective of the ground division. With that in mind, you zoomed in on the experiences of that customer group and were able to understand more about their customer journey. You could also see that despite her grouses, YT also has some blindspots about upstream causes for the customer issues her team is seeing.  </p>"
-            paragraph.innerHTML +="<p class='health-status-growth'>Customer Insight + 10</p>"
-            changeSSV("CustomerInsight", 10)
-        }       
-    } else{
-        paragraph.innerHTML +="<p> Armed with the knowledge of the policy intention behind the product, you and Andrea are able to identify key moments in the customer journey that impact the solution space.</p>"
-        paragraph.innerHTML +="<p class='health-status-growth'>Problem Statement Clarity + 10, Customer Insight + 10</p>"
-        changeSSV("ProblemStatementClarity", 10)           
-        changeSSV("CustomerInsight", 10)
-        if (InterviewedGroundDivision==0){
-            paragraph.innerHTML +="<p> Some of the ground staff almost chased you off the premises because they had no idea you were coming or what you were aiming to do.</p>"
-            paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 10</p>"
-            changeSSV("TeamMorale", - 10)
-         } else {
-            paragraph.innerHTML +="<p> Furthermore, interviewing the ground division gave you a good sense of additional complications in the planned policy solution. With those tensions in mind, Andrea and you were able to better understand the full customer journey.    </p>"
+    if (ObservedCustomers==0){
+        if (InterviewedPolicyOwner==0){
+            paragraph.innerHTML +="<p> Without deeper knowledge of the policy intention behind the product, you and Andrea do not really understand how the solution is meant to improve the customer experience. Andrea does manage to glean some findings from her observations which might be useful in future, but she is a bit worried that this round of customer observations was a waste of time.</p>"
+            paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 10, <span class='health-status-growth'> ProblemStatementClarity + 10</span></p>"
+            changeSSV("Team Morale", - 10)
+            changeSSV("ProblemStatementClarity", 10)
+            if (InterviewedGroundDivision==0){
+                paragraph.innerHTML +="<p> On top of that, some of the ground staff almost chased you off the premises because they had no idea you were coming or what you were aiming to do.</p>"
+                paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 10</p>"
+                changeSSV("TeamMorale", - 10)
+            } else {
+                paragraph.innerHTML +="<p> However, YT had briefed you on the pain points in the customer journey from the perspective of the ground division. With that in mind, you zoomed in on the experiences of that customer group and were able to understand more about their customer journey. You could also see that despite her grouses, YT also has some blindspots about upstream causes for the customer issues her team is seeing.  </p>"
+                paragraph.innerHTML +="<p class='health-status-growth'>Customer Insight + 10</p>"
+                changeSSV("CustomerInsight", 10)
+            }       
+        } else{
+            paragraph.innerHTML +="<p> Armed with the knowledge of the policy intention behind the product, you and Andrea are able to identify key moments in the customer journey that impact the solution space.</p>"
             paragraph.innerHTML +="<p class='health-status-growth'>Problem Statement Clarity + 10, Customer Insight + 10</p>"
             changeSSV("ProblemStatementClarity", 10)           
             changeSSV("CustomerInsight", 10)
-            }       
+            if (InterviewedGroundDivision==0){
+                paragraph.innerHTML +="<p> Some of the ground staff almost chased you off the premises because they had no idea you were coming or what you were aiming to do.</p>"
+                paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 10</p>"
+                changeSSV("TeamMorale", - 10)
+            } else {
+                paragraph.innerHTML +="<p> Furthermore, interviewing the ground division gave you a good sense of additional complications in the planned policy solution. With those tensions in mind, Andrea and you were able to better understand the full customer journey.    </p>"
+                paragraph.innerHTML +="<p class='health-status-growth'>Problem Statement Clarity + 10, Customer Insight + 10</p>"
+                changeSSV("ProblemStatementClarity", 10)           
+                changeSSV("CustomerInsight", 10)
+                }       
+        }
+        // disable customerObservations and increment ObservedCustomers
+        var buttontodisable = document.getElementById("observationButton");    
+        buttontodisable.style.display = "none"
+        changeSSV("ObservedCustomers", 1)
+        paragraph.innerHTML +="<p> You would not want to re-do customer observations unless there are significant changes in the assumptions that warrant it</p>"
+    } else{
+        // do we want to open up avenue to re-open customer observations at some point?
     }
-
-
-
-    // should we disable customerObservations
-
     // update the health status
     updateHealth()
+}
+
+
+function identifyCriticalAssumption(){
+    
 }
