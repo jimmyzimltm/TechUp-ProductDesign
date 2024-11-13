@@ -15,7 +15,7 @@ function resetVariables(){
     sessionStorage.setItem("WrittenProblemStatement",0)
     sessionStorage.setItem("ObservedCustomers",0)
     sessionStorage.setItem("PaperProto",0)
-     
+    sessionStorage.setItem("WroteTestPlan",0) 
     
     sessionStorage.setItem("CustomerInterviews",0)
     sessionStorage.setItem("EngineersHired",false)
@@ -34,10 +34,6 @@ for (let eventday=1; eventday<31; eventday++) {
     header.textContent=""
     paragraph.textContent=""
 }
-
-    //debug text
-    alert("Initiating Day 1");
-
 // Show the process menu
     var hiddenDiv=document.getElementById("processmenu")
     hiddenDiv.style.display='block';
@@ -52,6 +48,11 @@ for (let eventday=1; eventday<31; eventday++) {
 
     var buttontodisable = document.getElementById("plantestButton");    
     buttontodisable.style.display = "none"
+    buttontodisable = document.getElementById("testprotoButton");    
+    buttontodisable.style.display = "none"
+    buttontodisable.textContent = "Test Prototype"
+    
+
     document.getElementById("startButton").textContent = "Go back to Day 1";
 
 // Kick off Day 1 
@@ -455,9 +456,12 @@ function buildPaperProto(){
     sessionStorage.setItem("PaperProto", TotalClarity)
     sessionStorage.setItem("ProductReadiness", "Paper Prototype")
 
-    //enable the plantestbutton
+    //enable the plantestbutton and testprotobtn
     var buttontoenable = document.getElementById("plantestButton");    
     buttontoenable.style.display = "block"
+    buttontoenable = document.getElementById("testprotoButton");    
+    buttontoenable.style.display = "block"
+    buttontoenable.textContent = "Test Paper Prototype (4 days)"
 
     // update the health status
     updateHealth()
@@ -496,6 +500,8 @@ function planProtoTest(){
             changeSSV("TeamMorale", - 10)
             sessionStorage.setItem("PaperProto", TotalClarity)
         }
+        // For Paper Prototype, the most important fit is ProblemStatementClarity
+        sessionStorage.setItem("WroteTestPlan",ProblemStatementClarity)
     } else {
         if (sessionStorage.getItem("ProductReadiness")=="Figma Prototype"){
             var ProtoClarity = sessionStorage.getItem("FigmaProto")
@@ -505,6 +511,7 @@ function planProtoTest(){
                 changeSSV("TeamMorale", - 20)
                 sessionStorage.setItem("FigmaProto", TotalClarity)
             }
+            sessionStorage.setItem("WroteTestPlan",TotalClarity)
         } else {
             var ProtoClarity = sessionStorage.getItem("ClickableProto")
             if (ProtoClarity != TotalClarity){
@@ -513,8 +520,96 @@ function planProtoTest(){
                 changeSSV("TeamMorale", - 30)
                 sessionStorage.setItem("ClickableProto", TotalClarity)
             }
+            sessionStorage.setItem("WroteTestPlan",TotalClarity)
         }
     }
+       // disable the plantestbtn for now
+    var buttontodisable = document.getElementById("plantestButton");    
+    buttontodisable.style.display = "none"
+    // update the health status
+    updateHealth()
+}
+
+
+function testProto(){
+    // move the mostrecent day into the past and increment the dayX
+    advancetheDay();
+    // get the current day
+    var dayX=+sessionStorage.getItem("DayX")
+    //    select Article with ID mostrecent
+    var article = document.getElementById("mostrecent");
+    // change the header to reflect current Day. Note this is a 4 day exercise
+    var header = article.querySelector("header h4");
+    var paragraph = article.querySelector("p")
+    header.textContent = "Day " + dayX
+    dayX=dayX+4
+    header.textContent += " to Day " + dayX
+    sessionStorage.setItem("DayX", dayX)
+
+    var ProblemStatementClarity = +sessionStorage.getItem("ProblemStatementClarity")
+    var CustomerInsight = +sessionStorage.getItem("CustomerInsight")
+    var TotalClarity = ProblemStatementClarity + CustomerInsight
+    var TestPlanClarity =  +sessionStorage.getItem("WroteTestPlan")
+
+    paragraph.innerHTML ="<p> You spend a total of 4 days (spread out with other work) testing the prototype with customers.</p>"
+    paragraph.innerHTML +="<p> 1 day was spent recruiting customers, 2 days were spent conducting the interviews, and 1 day consolidating the findings and reporting to Patrick.</p>"
+
+    // check which prototype you are testing for 
+    if (sessionStorage.getItem("ProductReadiness")=="Paper Prototype"){
+        // Paper Prototypes are meant to test Problem Statement fit cheaply
+        if (ProblemStatementClarity >60){
+            paragraph.innerHTML +="<p> The paper prototype is strikingly successful. Customers interacting with the the prototype give many signals about how well the proposed solution would meet their needs, and even add more ideas for features they would like to see.</p>"
+            paragraph.innerHTML +="<p class='health-status-growth'>Problem Statement Clarity +10</p>"
+            changeSSV("ProblemStatementClarity", 10)
+            if(TestPlanClarity==0){
+                paragraph.innerHTML +="<p> The high level of acceptance of the prototype gives the team a shot of confidence. However, the lack of a well-written test plan meant that many of the interviews meandered to the new features requested by customers, rather than focusing on what customers liked about the features of the prototype. This was a missed opportunity to show stakeholders the value of the proposed solution</p>"
+                paragraph.innerHTML +="<p class='health-status-growth'>Team Morale + 10, Business Owner Confidence +0</p>"
+                changeSSV("TeamMorale", 10)
+            } else {
+                paragraph.innerHTML +="<p> The high level of acceptance of the prototype gives the team a shot of confidence. When the findings are emailed to the respective stakeholders, the respective division directors reply positively with support for the direction the team is taking.</p>"
+                paragraph.innerHTML +="<p class='health-status-growth'>Team Morale + 10, Business Owner Confidence +20</p>"
+                changeSSV("TeamMorale", 10)
+                changeSSV("BusinessOwnerConfidence", 20)
+            }
+        } else {
+            paragraph.innerHTML +="<p> The paper prototype turns out to miss the mark. Customers interacting with the prototype reject the underlying premise. This is somewhat discouraging for Andrea and you, that you seem to have missed the mark. Although Patrick tries to encourage the team, when you email the report to stakeholder divisions, the email is met with a somewhat stony silence. </p>"
+            paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 10, Business Owner Confidence - 10</p>"
+            changeSSV("TeamMorale", -10)
+            changeSSV("BusinessOwnerConfidence", -10)
+            if (TestPlanClarity==0){
+                paragraph.innerHTML +="<p> Without a test plan, the facilitators struggle to capture the views of customers coherently. While you still get some useful insights to help pivot the solution, you feel that you missed an opportunity.</p>"
+                paragraph.innerHTML +="<p class='health-status-growth'>Problem Statement Clarity + 10</p>"
+                changeSSV("ProblemStatementClarity", 10)
+            } else {
+                paragraph.innerHTML +="<p> However, the well-written test plan allows the facilitators to quickly pivot towards developing and fleshing out other hypotheses about the problem statement and the customer journey.</p>"
+                paragraph.innerHTML +="<p class='health-status-growth'>Problem Statement Clarity + 20, Customer Insight + 10</p>"
+                changeSSV("ProblemStatementClarity", 20)
+                changeSSV("CustomerInsight", 10)
+            }
+        }
+    } else {
+        // if (sessionStorage.getItem("ProductReadiness")=="Figma Prototype"){
+        //     var ProtoClarity = sessionStorage.getItem("FigmaProto")
+        //     if (ProtoClarity != TotalClarity){
+        //         paragraph.innerHTML +="<p> You belatedly realise that you had not updated the paper prototype to take into account your latest customer insights. To fix this, Andrea pulls an all-nighter to update the figma prototype.</p>"
+        //         paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 20</p>"
+        //         changeSSV("TeamMorale", - 20)
+        //         sessionStorage.setItem("FigmaProto", TotalClarity)
+        //     }
+        // } else {
+        //     var ProtoClarity = sessionStorage.getItem("ClickableProto")
+        //     if (ProtoClarity != TotalClarity){
+        //         paragraph.innerHTML +="<p> You belatedly realise that you had not updated the clickable prototype to take into account your latest customer insights. To fix this, your engineers pull an all-nighter to update the clickable prototype. They are VERY unhappy</p>"
+        //         paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 30</p>"
+        //         changeSSV("TeamMorale", - 30)
+        //         sessionStorage.setItem("ClickableProto", TotalClarity)
+        //     }
+        // }
+    }
+
+
+    // reset TestPlan
+    sessionStorage.setItem("WroteTestPlan",0)
     // update the health status
     updateHealth()
 }
