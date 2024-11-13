@@ -174,7 +174,11 @@ function interviewPolicyOwner(){
             changeSSV("ProblemStatementClarity", 10)           
         }
         //either way, store the current customer insight level as the variable for when we last interviewed the policy owner
+        if (sessionStorage.getItem("CustomerInsight")==0){
+            sessionStorage.setItem("InterviewedPolicyOwner",1)
+        } else{
             sessionStorage.setItem("InterviewedPolicyOwner",sessionStorage.getItem("CustomerInsight"))
+        }   
     } else {
         // check level of customer insight
         if ((CustomerInsight-InterviewedPolicyOwner)>20){
@@ -219,20 +223,17 @@ function interviewGroundDivision(){
     var ProblemStatementClarity = +sessionStorage.getItem("ProblemStatementClarity")
     if (InterviewedGroundDivision ==0){
         // have the team interviewed the policy owner?
+        paragraph.innerHTML ="<p>You interview YT, the Director of the customer-facing division. She has great insights into the customers who might be using the product. </p>"
+        paragraph.innerHTML +="<p class='health-status-growth'>Customer Insight +20</p>"
+        changeSSV("CustomerInsight",20)
         if (InterviewedPolicyOwner ==0){
             // Not good response - ground division does not quite understand the policy decision. However, they are able to share their views on what the customer journey looks like
-            paragraph.innerHTML ="<p>You interview YT, the Director of the customer-facing division. She has great insights into the customers who might be using the product. </p>"
-            paragraph.innerHTML +="<p class='health-status-growth'>Customer Insight +20</p>"
-            changeSSV("CustomerInsight",20)
             paragraph.innerHTML +="<p> However, she questions the proposed solution, and says that she thinks it does not address the pain points of customers and the staff who inevitably face the brunt of customer unhappiness. Without a clear understanding of the policy rationale behind the decision, you find it difficult to have a deeper discussion with her on how the web app would work. You sense that she may be a bit frustrated. Andrea's confidence is also shaken.</p>"
             paragraph.innerHTML +="<p class='health-status-loss'>Business Owner Confidence - 10, Team Morale - 10</p>"
             changeSSV("BusinessOwnerConfidence", -10)
             changeSSV("TeamMorale",-10)
         } else {
             // Good response. With knowledge of the policy goals that the policy division intended, you manage to dig deeper into the problem statement. 
-            paragraph.innerHTML ="<p>You interview YT, the Director of the customer-facing division. She has great insights into the customers who might be using the product.</p>"
-            paragraph.innerHTML +="<p class='health-status-growth'>Customer Insight +20</p>"
-            changeSSV("CustomerInsight",20)
             paragraph.innerHTML +="<p> YT questions the proposed solution,and says that she thinks it does not address the pain points of customers and the staff who inevitably face the brunt of customer unhappiness. From your discussions with Jeannette, you recall that the policy division had highlighted that they felt that customer complaints on the ground were precipitated upstream by the behaviours of a different group of stakeholders. The proposed solution aims to address the behaviors of those stakeholders and eliminate the upstream cause of the issues which trigger customer complaints. </p>"
             paragraph.innerHTML +="<p> When you have explained that, YT thoughtfully acknowledges the view. She explains that the upstream issue is more complicated than the policy division thinks. Nonetheless, you convince her that studying the customers' behaviours more closely may shed more light on the possible solutions.   </p>"
             paragraph.innerHTML +="<p class='health-status-growth'>Problem Statement Clarity + 10, Business Owner Confidence + 10</p>"
@@ -294,11 +295,11 @@ function writeProblemStatement(){
         if (TotalClarity==10){
             paragraph.innerHTML +="<p> 'I think it is quite hard to write down the problem statement when we know so little. Maybe we should speak to our stakeholders first?' Andrea seems a bit disappointed in your planning. </p>"
             paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 10</p>"
-            changeSSV("Team Morale", -10)
+            changeSSV("TeamMorale", -10)
         } else {
             paragraph.innerHTML +="<p> Spending some time to write down the problem statement helps the team to consolidate what you have learnt from different stakeholders, and gives the team more confidence</p>"
             paragraph.innerHTML +="<p class='health-status-growth'>Team Morale + 10</p>"
-            changeSSV("Team Morale", 10)
+            changeSSV("TeamMorale", 10)
         }
     } else {
         if (ProblemStatementClarity == TotalClarity){
@@ -319,16 +320,57 @@ function observeCustomers(){
     var dayX=+sessionStorage.getItem("DayX")
     //    select Article with ID mostrecent
     var article = document.getElementById("mostrecent");
-    // change the header to reflect current Day
+    // change the header to reflect current Day. Customer Observation is multiday - takes up 3 days to conduct and write findings
     var header = article.querySelector("header h4");
     var paragraph = article.querySelector("p")
-    header.textContent = "Day " + dayX;
+    header.textContent = "Day " + dayX
+    dayX=dayX+2
+    header.textContent += " to Day " + dayX
+    sessionStorage.setItem("DayX", dayX)
     // Pathing - how much customerinsight and problemstatementclarity does the team have? 
     var ProblemStatementClarity = +sessionStorage.getItem("ProblemStatementClarity")
     var CustomerInsight = +sessionStorage.getItem("CustomerInsight")
     var TotalClarity = ProblemStatementClarity + CustomerInsight
+    var InterviewedPolicyOwner =     +sessionStorage.getItem("InterviewedPolicyOwner")
+    var InterviewedGroundDivision =     +sessionStorage.getItem("InterviewedGroundDivision")
+
+    paragraph.textContent ="You spend some time planning your customer observations, conducting them at diverse sites, and then coming together to consolidate your findings."
     
-    // disable customerObservations
+    
+    if (InterviewedPolicyOwner==0){
+        paragraph.innerHTML +="<p> Without deeper knowledge of the policy intention behind the product, you and Andrea do not really understand how the solution is meant to improve the customer experience. Andrea does manage to glean some findings from her observations which might be useful in future, but she is a bit worried that this round of customer observations was a waste of time.</p>"
+        paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 10, <span class='health-status-growth'> ProblemStatementClarity + 10</span></p>"
+        changeSSV("Team Morale", - 10)
+        changeSSV("ProblemStatementClarity", 10)
+        if (InterviewedGroundDivision==0){
+            paragraph.innerHTML +="<p> On top of that, some of the ground staff almost chased you off the premises because they had no idea you were coming or what you were aiming to do.</p>"
+            paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 10</p>"
+            changeSSV("TeamMorale", - 10)
+        } else {
+            paragraph.innerHTML +="<p> However, YT had briefed you on the pain points in the customer journey from the perspective of the ground division. With that in mind, you zoomed in on the experiences of that customer group and were able to understand more about their customer journey. You could also see that despite her grouses, YT also has some blindspots about upstream causes for the customer issues her team is seeing.  </p>"
+            paragraph.innerHTML +="<p class='health-status-growth'>Customer Insight + 10</p>"
+            changeSSV("CustomerInsight", 10)
+        }       
+    } else{
+        paragraph.innerHTML +="<p> Armed with the knowledge of the policy intention behind the product, you and Andrea are able to identify key moments in the customer journey that impact the solution space.</p>"
+        paragraph.innerHTML +="<p class='health-status-growth'>Problem Statement Clarity + 10, Customer Insight + 10</p>"
+        changeSSV("ProblemStatementClarity", 10)           
+        changeSSV("CustomerInsight", 10)
+        if (InterviewedGroundDivision==0){
+            paragraph.innerHTML +="<p> Some of the ground staff almost chased you off the premises because they had no idea you were coming or what you were aiming to do.</p>"
+            paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 10</p>"
+            changeSSV("TeamMorale", - 10)
+         } else {
+            paragraph.innerHTML +="<p> Furthermore, interviewing the ground division gave you a good sense of additional complications in the planned policy solution. With those tensions in mind, Andrea and you were able to better understand the full customer journey.    </p>"
+            paragraph.innerHTML +="<p class='health-status-growth'>Problem Statement Clarity + 10, Customer Insight + 10</p>"
+            changeSSV("ProblemStatementClarity", 10)           
+            changeSSV("CustomerInsight", 10)
+            }       
+    }
+
+
+
+    // should we disable customerObservations
 
     // update the health status
     updateHealth()
