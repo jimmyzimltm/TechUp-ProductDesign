@@ -14,12 +14,13 @@ function resetVariables(){
     sessionStorage.setItem("InterviewedGroundDivision",0)
     sessionStorage.setItem("WrittenProblemStatement",0)
     sessionStorage.setItem("ObservedCustomers",0)
+    sessionStorage.setItem("PaperProto",0)
     sessionStorage.setItem("CriticalAssumption",0)    
-
+    
     sessionStorage.setItem("CustomerInterviews",0)
     sessionStorage.setItem("EngineersHired",false)
 
-    sessionStorage.setItem("PaperProto",false)
+    
     sessionStorage.setItem("FigmaProto",false)
     sessionStorage.setItem("ClickableProto",false)
     //call once to show health variables
@@ -45,7 +46,8 @@ for (let eventday=1; eventday<31; eventday++) {
     buttontoenable.style.display = "block"
     buttontoenable = document.getElementById("grounddivisionButton");    
     buttontoenable.style.display = "block"
-
+    buttontoenable = document.getElementById("observationButton");    
+    buttontoenable.style.display = "block"
 
     document.getElementById("startButton").textContent = "Go back to Day 1";
 
@@ -385,6 +387,101 @@ function observeCustomers(){
 }
 
 
-function identifyCriticalAssumption(){
+function buildPaperProto(){
+    // move the mostrecent day into the past and increment the dayX
+    advancetheDay();
+    // get the current day
+    var dayX=+sessionStorage.getItem("DayX")
+    //    select Article with ID mostrecent
+    var article = document.getElementById("mostrecent");
+    // change the header to reflect current Day. 
+    var header = article.querySelector("header h4");
+    var paragraph = article.querySelector("p")
+    header.textContent = "Day " + dayX
     
+    // Pathing really depends on how much total clarity they have in various categories. Simple version here
+    var PaperProto = +sessionStorage.getItem("PaperProto")
+    var ProblemStatementClarity = +sessionStorage.getItem("ProblemStatementClarity")
+    var CustomerInsight = +sessionStorage.getItem("CustomerInsight")
+    var TotalClarity = ProblemStatementClarity + CustomerInsight
+    var WrittenProblemStatement = sessionStorage.getItem("WrittenProblemStatement")
+    if (PaperProto==0){
+        if (ProblemStatementClarity==10){
+            if (CustomerInsight==0){
+                paragraph.innerHTML ="<p> You dive into solutioning a paper prototype without having interviewed the policy owner, thought about the deeper implications of the work, or looked at how customers might be affected.</p>"
+                paragraph.innerHTML +="<p> After a lot of back and forth, you emerge with an almost purely theoretical paper prototype based on a hypothetical customer, but neither you nor Andrea have much confidence in the product.</p>"
+                paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 20</p>"
+                changeSSV("TeamMorale", - 20)
+            } else {
+                paragraph.innerHTML ="<p> You dive into solutioning a paper prototype without having interviewed the policy owner or thought about the deeper implications of the work. Thankfully you have studied the customer somewhat and have some useful insights to contribute.</p>"
+                paragraph.innerHTML +="<p> The back and forth on the paper prototype is quite frustrating as you and Andrea struggle to reach agreement on what the key problem to solve is.</p>"
+                paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 10</p>"
+                changeSSV("TeamMorale", - 10)
+            }
+        } else {
+            if (CustomerInsight==0){
+                paragraph.innerHTML ="<p> You dive into solutioning a paper prototype with some clarity on the problem statement, but without having studied the customer.</p>"
+                paragraph.innerHTML +="<p> As a result, the back and forth on the paper prototype is quite frustrating as you and Andrea struggle to reach agreement on how customers would be served by the web app.</p>"
+                paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 10</p>"
+                changeSSV("TeamMorale", - 10)
+            } else {
+                paragraph.innerHTML ="<p> You dive into solutioning a paper prototype with some clarity on both the problem statement and the underlying customer experiences.</p>"
+                paragraph.innerHTML +="<p> As a result, the back and forth on the paper prototype is quite productive and actually helps you develop better clarity on the problem statement.</p>"
+                paragraph.innerHTML +="<p class='health-status-growth'>Problem Statement Clarity + 10</p>"
+                changeSSV("ProblemStatementClarity", 10)            
+            }
+            if (WrittenProblemStatement==TotalClarity){
+                paragraph.innerHTML +="<p> Having an up-to-date written problem statement makes it easier for you to keep your discussions on track.</p>"
+                paragraph.innerHTML +="<p class='health-status-growth'>Team Morale + 10</p>"
+                changeSSV("TeamMorale", 10)            
+            }
+        }
+    } else{
+        if (PaperProto==TotalClarity){
+            paragraph.innerHTML ="<p> You waste a day adjusting your paper prototype even though you have learnt nothing new. Andrea asks you whether you have had temporary amnesia.</p>"
+            paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 10</p>"
+            changeSSV("TeamMorale", - 10)
+        } else {
+            paragraph.innerHTML ="<p> You spend a day updating your paper prototype to take into account what you have learnt since you last built it.</p>"
+        }
+    }
+    // Set the clarity level of the PaperPrototype
+    ProblemStatementClarity = +sessionStorage.getItem("ProblemStatementClarity")
+    CustomerInsight = +sessionStorage.getItem("CustomerInsight")
+    TotalClarity = ProblemStatementClarity + CustomerInsight
+    sessionStorage.setItem("PaperProto", TotalClarity)
+    // update the health status
+    updateHealth()
 }
+
+
+// function identifyCriticalAssumption(){
+//     // move the mostrecent day into the past and increment the dayX
+//     advancetheDay();
+//     // get the current day
+//     var dayX=+sessionStorage.getItem("DayX")
+//     //    select Article with ID mostrecent
+//     var article = document.getElementById("mostrecent");
+//     // change the header to reflect current Day. 
+//     var header = article.querySelector("header h4");
+//     var paragraph = article.querySelector("p")
+//     header.textContent = "Day " + dayX
+
+
+    
+//     var ProblemStatementClarity = +sessionStorage.getItem("ProblemStatementClarity")
+//     var CustomerInsight = +sessionStorage.getItem("CustomerInsight")
+//     var TotalClarity = ProblemStatementClarity + CustomerInsight
+
+//     // is there a prototype to test this for?
+//     if (sessionStorage.getItem("CriticalAssumption")==TotalClarity){
+
+//     } else {
+//         paragraph.textContent =" You spend some time thinking through what the most critical assumption. "
+//         sessionStorage.setItem("CriticalAssumption",TotalClarity)
+//     }
+
+
+//     // update the health status
+//     updateHealth()
+// }
