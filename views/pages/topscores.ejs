@@ -31,12 +31,16 @@
 
         </div>
         <table>
+            <TR>
+                <TD> UserName </TD>
+                <TD> Score </TD>
+            </TR>
         <!-- Show top scores -->
         <% savedscores.forEach(post => { %>
           
                 <tr>
-                    <td><%= post.title %></td>
-                    <td><%= post.content %></td>
+                    <td><%= post.username %></td>
+                    <td><%= post.score %></td>
                     <!-- <td>                
                         <form action="/delete/<%= post.id %>" method="post" onsubmit="return confirm('Do you really want to delete this score?');">
                         <button class="outline primary" type="submit">Delete</button>

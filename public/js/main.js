@@ -79,7 +79,7 @@ function updateHealth(){
     document.getElementById("team-morale").textContent=sessionStorage.getItem("TeamMorale")
     document.getElementById("business-owner-confidence").textContent=sessionStorage.getItem("BusinessOwnerConfidence")
     // check if it is day 20
-    if(sessionStorage.getItem("DayX")>20){
+    if(sessionStorage.getItem("DayX")>19){
         concludeGame()
     } 
 }
@@ -556,11 +556,11 @@ function testProto(){
     var dayX=+sessionStorage.getItem("DayX")
     //    select Article with ID mostrecent
     var article = document.getElementById("mostrecent");
-    // change the header to reflect current Day. Note this is a 4 day exercise
+    // change the header to reflect current Day. Note this is a 3 day exercise
     var header = article.querySelector("header h4");
     var paragraph = article.querySelector("p")
     header.textContent = "Day " + dayX
-    dayX=dayX+3
+    dayX=dayX+2
     header.textContent += " to Day " + dayX
     sessionStorage.setItem("DayX", dayX)
 
@@ -887,5 +887,11 @@ function concludeGame(){
     //display game over text with button to save score
     hiddenDiv=document.getElementById("concludegame")
     hiddenDiv.style.display='block';
-    
+    var ProblemStatementClarity = +sessionStorage.getItem("ProblemStatementClarity")
+    var CustomerInsight = +sessionStorage.getItem("CustomerInsight")
+    var TeamMorale = +sessionStorage.getItem("TeamMorale")
+    var BusinessOwnerConfidence = +sessionStorage.getItem("BusinessOwnerConfidence")
+    var finalscore = ProblemStatementClarity+CustomerInsight+TeamMorale+BusinessOwnerConfidence
+    var scorereport = document.getElementById("scorereport")
+    scorereport.textContent = "Your total score is " + finalscore
 }
