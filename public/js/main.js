@@ -597,23 +597,48 @@ function testProto(){
             }
         }
     } else {
-        // if (sessionStorage.getItem("ProductReadiness")=="Figma Prototype"){
-        //     var ProtoClarity = sessionStorage.getItem("FigmaProto")
-        //     if (ProtoClarity != TotalClarity){
-        //         paragraph.innerHTML +="<p> You belatedly realise that you had not updated the paper prototype to take into account your latest customer insights. To fix this, Andrea pulls an all-nighter to update the figma prototype.</p>"
-        //         paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 20</p>"
-        //         changeSSV("TeamMorale", - 20)
-        //         sessionStorage.setItem("FigmaProto", TotalClarity)
-        //     }
-        // } else {
-        //     var ProtoClarity = sessionStorage.getItem("ClickableProto")
-        //     if (ProtoClarity != TotalClarity){
-        //         paragraph.innerHTML +="<p> You belatedly realise that you had not updated the clickable prototype to take into account your latest customer insights. To fix this, your engineers pull an all-nighter to update the clickable prototype. They are VERY unhappy</p>"
-        //         paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 30</p>"
-        //         changeSSV("TeamMorale", - 30)
-        //         sessionStorage.setItem("ClickableProto", TotalClarity)
-        //     }
-        // }
+        if (sessionStorage.getItem("ProductReadiness")=="Lo-Fidelity Prototype"){
+        // Lo-fidelity Prototypes are meant to test content structure and functionality
+        var ProtoClarity = sessionStorage.getItem("LoFiProto")
+            if (TotalClarity>100){
+                paragraph.innerHTML +="<p> The prototype tests extremely well, and customers report both that the web app meets their needs, and the content is well-structured. Andrea and you are quite excited that you have hit on the right solution.</p>"
+                paragraph.innerHTML +="<p class='health-status-growth'>Team Morale + 10</p>"
+                changeSSV("TeamMorale", 10)
+                if (TestPlanClarity==0){
+                    paragraph.innerHTML +="<p> Without a test plan, the facilitators struggle to capture the views of customers coherently. While you still get some useful insights on how to improve the customer journey, you feel that you missed an opportunity.</p>"
+                    paragraph.innerHTML +="<p class='health-status-growth'>Customer Insight  + 10</p>"
+                    changeSSV("CustomerInsight", 10)
+                } else{
+                    paragraph.innerHTML +="<p> Your facilitators stick to the test plan, which allows you to tease out and test a critical assumption in your web app flow. The insights help you decide to switch the ordering of two steps in the journey to become more intuitive to the users.</p>"
+                    paragraph.innerHTML +="<p class='health-status-growth'>Problem Statement Clarity +10, Customer Insight +10</p>"
+                    changeSSV("ProblemStatementClarity", 10)
+                    changeSSV("CustomerInsight", 10)    
+                }
+             } else {
+                paragraph.innerHTML +="<p> You have no difficulty recruiting customers for the test, suggesting that customers see the problem as real and are excited to see possible solutions. However, their feedback on the prototype suggests that the solution may have missed the mark somehow.</p>"
+                paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 10</p>"
+                changeSSV("TeamMorale", -10)                
+                if (TestPlanClarity==0){
+                    paragraph.innerHTML +="<p> Without a test plan, the facilitators struggle to capture the views clearly. The feedback captured still gives you insight into the customer journey, but does not dive deeply enough into why customers feel the way they do.</p>"
+                    paragraph.innerHTML +="<p class='health-status-growth'>Customer Insight  + 10</p>"
+                    changeSSV("CustomerInsight", 10)
+                } else{
+                    paragraph.innerHTML +="<p> Your test plan included a critical assumption to test, flags for the facilitators to look for, and suggested questions to dive deeper into the issue. With these plans in place, the facilitators were able to elicit where the prototype was falling short and understand why the test customers were struggling with the web app.  .</p>"
+                    paragraph.innerHTML +="<p> Armed with those insights, you start to make changes to your web app to more directly address the problem at its source.</p>"
+                    paragraph.innerHTML +="<p class='health-status-growth'>Problem Statement Clarity +10, Customer Insight +20</p>"
+                    changeSSV("ProblemStatementClarity", 10)
+                    changeSSV("CustomerInsight", 20)    
+                }
+             }
+        } else {
+            // var ProtoClarity = sessionStorage.getItem("ClickableProto")
+            // if (ProtoClarity != TotalClarity){
+            //     paragraph.innerHTML +="<p> You belatedly realise that you had not updated the clickable prototype to take into account your latest customer insights. To fix this, your engineers pull an all-nighter to update the clickable prototype. They are VERY unhappy</p>"
+            //     paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 30</p>"
+            //     changeSSV("TeamMorale", - 30)
+            //     sessionStorage.setItem("ClickableProto", TotalClarity)
+            // }
+        }
     }
     // reset TestPlan, hide the test prototype button again
     sessionStorage.setItem("WroteTestPlan",0)
