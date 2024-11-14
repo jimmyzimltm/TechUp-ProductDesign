@@ -28,7 +28,7 @@
         <!-- Welcome information -->
         <div class="topline-container">
             <h1>Welcome to Product Design Game</h1>
-            <p>Your mission, should you choose to accept it, is to navigate a product design journey. Acting as a the product manager placed in charge of a new web app, your goal is to get the web app to the best possible start in its first 4 weeks (or 20 working days). At the end of that time, your product will automatically move into MVP development and your score will be computed. </p>
+            <p>Your mission, should you choose to accept it, is to navigate a product design journey. Acting as a the product manager placed in charge of a new web app, your goal is to get the web app to the best possible start in its first 20 working days. At the end of that time, your product will automatically move into MVP development and your score will be computed. </p>
             <!-- TODO: Start by telling us your name -->
             <a onClick="resetVariables()" class="button" role="button" id="startButton">Start</a>
         </div>
@@ -36,21 +36,22 @@
         <!-- This is the health-status display, that shows that the player's status is on various top indicators -->
         <div class="health-display-container">
         <!-- TODO: To add icons and beautify -->
-        These 6 indicators track how well you are doing towards delivering a solution for the customer. 
+        These 5 indicators track how well you are doing towards delivering a solution for the customer. 
         <Table>
-        <Tr>
-            <TD colspan=2 class="statusdisplay"> <H6>Deadline</H6> </TD>
-            <TD colspan=2 class="statusdisplay"> <H6>Solutioning</H6> </TD>
-            <TD colspan=2 class="statusdisplay"> <H6>Confidence</H6> </TD>
-        </Tr>
-        <Tr>
-            <TD class="statusdisplay"> Days elapsed <span id="days-elapsed">0</span> </TD>
-            <TD class="statusdisplay"> Product Readiness <span id="product-readiness">None</span> </TD>
-            <TD class="statusdisplay"> Problem Statement Clarity <span id="problem-statement-clarity">-</span>/100 </TD>
-            <TD class="statusdisplay"> Customer Insight <span id="customer-insight">-</span>/100 </TD>
-            <TD class="statusdisplay"> Team Morale <span id="team-morale">-</span>/100</TD>
-            <TD class="statusdisplay"> Business Owner Confidence <span id="business-owner-confidence">-</span>/100</TD>
-        </Tr>
+            <Tr>
+                <TD class="statusdisplay" width="20%"><span class="emoji">📦</span>Product Readiness</TD>
+                <TD class="statusdisplay" width="20%"><span class="emoji">🔎</span>Problem Statement Clarity</TD>
+                <TD class="statusdisplay" width="20%"><span class="emoji">💭</span>Customer Insight </TD>
+                <TD class="statusdisplay" width="20%"><span class="emoji">💖</span>Team Morale</TD>
+                <TD class="statusdisplay" width="20%"><span class="emoji">💪</span>Business Owner Confidence</TD>
+            </Tr>
+            <Tr>
+                <TD class="statusdisplay"><span id="product-readiness">None</span> </TD>
+                <TD class="statusdisplay"><span id="problem-statement-clarity">-</span> </TD>
+                <TD class="statusdisplay"><span id="customer-insight">-</span> </TD>
+                <TD class="statusdisplay"><span id="team-morale">-</span></TD>
+                <TD class="statusdisplay"><span id="business-owner-confidence">-</span></TD>
+            </Tr>
         </Table>
         </div>
 
@@ -62,25 +63,51 @@
                 <p></p>
         </article>
 
+        <div class="conclude-game-container" id="concludegame">
+            <H4>Game over!</H4>
+            Thank you for playing. Your product is moving forward to production. Your scores are:
+            <form method="post">
+                <fieldset>
+                  <label>
+                    Title
+                    <input name="title" placeholder="Write the name of this post..."/>
+                  </label>
+                </fieldset>
+
+                <label>
+                Content
+                <textarea name="content" placeholder="Write what's on your mind..." ></textarea>
+                </label>
+
+
+                <input
+                  type="submit"
+                  value="🚀 Save your high score"
+                />
+              </form>
+        </div>
+
+
+
         <!-- This is where we park the buttons every time -->
         <div class="process-menu-container" id="processmenu">
          <!-- Setup button options --> 
         <H4>What do you wish to do next?</H4>
          <table>
             <TR>
-                <TD><a onClick="buildNoFiProto()" class="button" role="button" id="buildnofiButton">Build no-fidelity prototype (1 day)</a></TD>
-                <TD><a onClick="buildLoFiProto()" class="button" role="button" id="buildlofiButton">Build lo-fidelity prototype (2 days)</a></TD>
-                <TD>Build clickable prototype</TD>
+                <TD class="optiondisplay" width="30%"><a onClick="buildNoFiProto()" class="button" role="button" id="buildnofiButton">Build no-fidelity prototype (1 day)</a></TD>
+                <TD class="optiondisplay" width="30%"><a onClick="buildLoFiProto()" class="button" role="button" id="buildlofiButton">Build lo-fidelity prototype (2 days)</a></TD>
+                <TD class="optiondisplay" width="30%"><a onClick="buildHiFiProto()" class="button" role="button" id="buildhifiButton">Build hi-fidelity prototype (3 days)</TD>
             </TR>
             <TR>
-                <TD><a onClick="interviewPolicyOwner()" class="button" role="button" id="policyownerButton">Interview policy owner (1 day)</a></TD>
-                <TD><a onClick="interviewGroundDivision()" class="button" role="button" id="grounddivisionButton">Interview ground division (1 day)</a></TD>
-                <TD><a onClick="testProto()" class="button" role="button" id="testprotoButton">Test Prototype with Customers</a></TD>
+                <TD class="optiondisplay"><a onClick="interviewPolicyOwner()" class="button" role="button" id="policyownerButton">Interview policy owner (1 day)</a></TD>
+                <TD class="optiondisplay"><a onClick="interviewGroundDivision()" class="button" role="button" id="grounddivisionButton">Interview ground division (1 day)</a></TD>
+                <TD class="optiondisplay"><a onClick="testProto()" class="button" role="button" id="testprotoButton">Test Prototype with Customers</a></TD>
             </TR>
             <TR>
-                <TD><a onClick="observeCustomers()" class="button" role="button" id="observationButton">Observe customers in natural environment (3 days)</a></TD>
-                <TD><a onClick="writeProblemStatement()" class="button" role="button" id="writepsButton">Write Problem Statement (1 day)</a></TD>
-                <TD><a onClick="planProtoTest()" class="button" role="button" id="plantestButton">Plan Prototype Tests (2 days)</a></TD>
+                <TD class="optiondisplay"><a onClick="observeCustomers()" class="button" role="button" id="observationButton">Observe customers in natural environment (3 days)</a></TD>
+                <TD class="optiondisplay"><a onClick="writeProblemStatement()" class="button" role="button" id="writepsButton">Write Problem Statement (1 day)</a></TD>
+                <TD class="optiondisplay"><a onClick="planProtoTest()" class="button" role="button" id="plantestButton">Plan Prototype Tests (1 day)</a></TD>
             </TR>
           </table>   
         </div>

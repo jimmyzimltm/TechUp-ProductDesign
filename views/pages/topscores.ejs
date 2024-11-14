@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Design Game Home</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"/>
+    <link rel="stylesheet" href="/css/style.css" >
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-M0NXM8FB79"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-M0NXM8FB79');
+    </script>
+
+</head>
+
+<body>
+    <main class="container">
+        <!-- Navbar which can be reused across other pages -->
+        <%- include('../partials/navbar'); %>
+
+        <!-- Welcome information -->
+        <div class="topline-container">
+            <h1>Product Design Games Top Scores</h1>
+            <p>See all the top scores below </p>
+
+        </div>
+
+        <!-- Show top scores -->
+        <% blogs.forEach(post => { %>
+            <article class="post-container">
+                <h3><%= post.title %></h3>
+                <p><%= post.content %></p>
+                <!-- <form action="/delete/<%= post.id %>" method="post" onsubmit="return confirm('Do you really want to delete this post?');">
+                    <button class="outline primary" type="submit">Delete</button>
+                </form> -->
+            </article>
+        <% }); %>
+    </main>
+</body>
+</html>

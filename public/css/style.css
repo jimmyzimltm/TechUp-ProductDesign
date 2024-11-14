@@ -1,14 +1,13 @@
 .topline-container {
     text-align: center;
-
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .health-display-container {
     text-align: center
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -17,10 +16,22 @@
     text-align: center
 }
 
+.optiondisplay{
+    text-align: center
+}
+
+.emoji{
+    font-size: 2em; 
+}
+
+.conclude-game-container{
+    display: none;     /* The menu is hidden until conditions are met */
+}
+
 .process-menu-container {
     text-align: center
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     margin-left: auto;
     margin-right: auto;
 }

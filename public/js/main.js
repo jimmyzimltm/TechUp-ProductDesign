@@ -17,13 +17,13 @@ function resetVariables(){
     sessionStorage.setItem("NoFiProto",0)
     sessionStorage.setItem("NoFiProtoResult",0)
     sessionStorage.setItem("LoFiProto",0)
+    sessionStorage.setItem("HiFiProto",0)
     sessionStorage.setItem("WroteTestPlan",0) 
     
     sessionStorage.setItem("CustomerInterviews",0)
     sessionStorage.setItem("EngineersHired",false)
 
     
-    sessionStorage.setItem("ClickableProto",0)
     //call once to show health variables
     updateHealth()
 //clean up / wipe all articles as well, so that the Start button acts as reset as well
@@ -38,6 +38,11 @@ for (let eventday=1; eventday<31; eventday++) {
 // Show the process menu
     var hiddenDiv=document.getElementById("processmenu")
     hiddenDiv.style.display='block';
+
+// hide the conclude game menu
+    var hiddenDiv=document.getElementById("concludegame")
+    hiddenDiv.style.display='none';
+
 
 // reset initial button states
     var buttontoenable = document.getElementById("policyownerButton");    
@@ -54,7 +59,10 @@ for (let eventday=1; eventday<31; eventday++) {
     buttontodisable = document.getElementById("testprotoButton");    
     buttontodisable.style.display = "none"
     buttontodisable.textContent = "Test Prototype"
-    
+// hi fidelity prototype cannot be accessed until you have cleared at least one no-fi or lo-fi prototype test
+    buttontodisable = document.getElementById("buildhifiButton");    
+    buttontodisable.style.display = "none"
+
     document.getElementById("startButton").textContent = "Go back to Day 1";
 
 // Kick off Day 1 
@@ -64,15 +72,16 @@ for (let eventday=1; eventday<31; eventday++) {
 
 // repeated function to show the latest health status
 function updateHealth(){
-    //debugger alert
-    alert("Updating Health");
     //update all health variables one by one
-    document.getElementById("days-elapsed").textContent=sessionStorage.getItem("DayX")
     document.getElementById("product-readiness").textContent=sessionStorage.getItem("ProductReadiness")
     document.getElementById("problem-statement-clarity").textContent=sessionStorage.getItem("ProblemStatementClarity")
     document.getElementById("customer-insight").textContent=sessionStorage.getItem("CustomerInsight")
     document.getElementById("team-morale").textContent=sessionStorage.getItem("TeamMorale")
     document.getElementById("business-owner-confidence").textContent=sessionStorage.getItem("BusinessOwnerConfidence")
+    // check if it is day 20
+    if(sessionStorage.getItem("DayX")>20){
+        concludeGame()
+    } 
 }
 
 //toolbox function to change sessionStoragevariables
@@ -463,12 +472,16 @@ function buildNoFiProto(){
     sessionStorage.setItem("NoFiProto", TotalClarity)
     sessionStorage.setItem("ProductReadiness", "No-Fidelity Prototype")
 
+    // // rename the no-fi prototype text
+    // var buttontorename = document.getElementById("buildnofibutton")
+    // buttontorename.textContent = "Refine no-fidelity prototype (1 day)"
+
     //enable the plantestbutton and testprotobtn
     var buttontoenable = document.getElementById("plantestButton");    
     buttontoenable.style.display = "block"
     buttontoenable = document.getElementById("testprotoButton");    
     buttontoenable.style.display = "block"
-    buttontoenable.textContent = "Test No-Fi Prototype (4 days)"
+    buttontoenable.textContent = "Test No-Fi Prototype (3 days)"
 
     // update the health status
     updateHealth()
@@ -482,19 +495,17 @@ function planProtoTest(){
     var dayX=+sessionStorage.getItem("DayX")
     //    select Article with ID mostrecent
     var article = document.getElementById("mostrecent");
-    // change the header to reflect current Day. Note this is a 2 day exercise
+    // change the header to reflect current Day. 
     var header = article.querySelector("header h4");
     var paragraph = article.querySelector("p")
     header.textContent = "Day " + dayX
-    dayX=dayX+1
-    header.textContent += " to Day " + dayX
-    sessionStorage.setItem("DayX", dayX)
+
     
     var ProblemStatementClarity = +sessionStorage.getItem("ProblemStatementClarity")
     var CustomerInsight = +sessionStorage.getItem("CustomerInsight")
     var TotalClarity = ProblemStatementClarity + CustomerInsight
 
-    paragraph.innerHTML ="<p> You spend 2 days planning the prototype test. This included rigorously choosing the critical assumption which you wished to test, writing interview guides to help the facilitators stay on track, and preparing selection criteria for recruitment of customers for the test .</p>"
+    paragraph.innerHTML ="<p> You spend a day planning the prototype test. This included rigorously choosing the critical assumption which you wished to test, writing interview guides to help the facilitators stay on track, and preparing selection criteria for recruitment of customers for the test .</p>"
 
     // check which prototype you are testing for and load ProtoClarity
     var ProtoToTest = sessionStorage.getItem("ProductReadiness")
@@ -520,12 +531,12 @@ function planProtoTest(){
             }
             sessionStorage.setItem("WroteTestPlan",TotalClarity)
         } else {
-            var ProtoClarity = sessionStorage.getItem("ClickableProto")
+            var ProtoClarity = sessionStorage.getItem("HiFiProto")
             if (ProtoClarity != TotalClarity){
                 paragraph.innerHTML +="<p> You belatedly realise that you had not updated the clickable prototype to take into account your latest customer insights. To fix this, your engineers pull an all-nighter to update the clickable prototype. They are VERY unhappy</p>"
                 paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 30</p>"
                 changeSSV("TeamMorale", - 30)
-                sessionStorage.setItem("ClickableProto", TotalClarity)
+                sessionStorage.setItem("HiFiProto", TotalClarity)
             }
             sessionStorage.setItem("WroteTestPlan",TotalClarity)
         }
@@ -558,8 +569,9 @@ function testProto(){
     var TotalClarity = ProblemStatementClarity + CustomerInsight
     var TestPlanClarity =  +sessionStorage.getItem("WroteTestPlan")
 
-    paragraph.innerHTML ="<p> You spend a total of 4 days (spread out with other work) testing the prototype with customers.</p>"
-    paragraph.innerHTML +="<p> 1 day was spent recruiting customers, 2 days were spent conducting the interviews, and 1 day consolidating the findings and reporting to Patrick.</p>"
+    paragraph.innerHTML ="<p> You spend a total of 3 days (spread out with other work) testing the prototype with customers.</p>"
+    paragraph.innerHTML +="<p> 2 days were spent conducting the interviews, and 1 day consolidating the findings and reporting to Patrick.</p>"
+    paragraph.innerHTML +="<p> (The work to recruit customers, while significant, was thankfully undertaken by the ground division)</p>"
 
     // check which prototype you are testing for 
     if (sessionStorage.getItem("ProductReadiness")=="No-Fidelity Prototype"){
@@ -579,6 +591,10 @@ function testProto(){
                 changeSSV("TeamMorale", 10)
                 changeSSV("BusinessOwnerConfidence", 20)
             }
+            // enable the hi fi build prototype, since users accepted the solution
+            paragraph.innerHTML +="<p> The successful customer tests gave Patrick sufficient confidence in the proposed solution. He assigns you three engineers, Belinda, Chris, and Dean. You can now build a high-fidelity prototype.</p>"
+            var buttontoenable = document.getElementById("buildhifiButton");    
+            buttontoenable.style.display = "block" 
         } else {
             paragraph.innerHTML +="<p> The proposed solution misses the mark due to lack of understanding of the underlying issues. Customers interviewed  reject the proposed solution. This is somewhat discouraging for Andrea and you, that you seem to have missed the mark. Although Patrick tries to encourage the team, when you email the report to stakeholder divisions, the email is met with a somewhat stony silence. </p>"
             paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 10, Business Owner Confidence - 10</p>"
@@ -614,6 +630,11 @@ function testProto(){
                     changeSSV("ProblemStatementClarity", 10)
                     changeSSV("CustomerInsight", 10)    
                 }
+                // enable the hi fi build prototype, since users accepted the solution
+                paragraph.innerHTML +="<p> The successful customer tests gave Patrick sufficient confidence in the proposed solution. He assigns you three engineers, Belinda, Chris, and Dean. You can now build a high-fidelity prototype.</p>"
+                var buttontoenable = document.getElementById("buildhifiButton");    
+                buttontoenable.style.display = "block" 
+
              } else {
                 paragraph.innerHTML +="<p> You have no difficulty recruiting customers for the test, suggesting that customers see the problem as real and are excited to see possible solutions. However, their feedback on the prototype suggests that the solution may have missed the mark somehow.</p>"
                 paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 10</p>"
@@ -631,20 +652,33 @@ function testProto(){
                 }
              }
         } else {
-            // var ProtoClarity = sessionStorage.getItem("ClickableProto")
-            // if (ProtoClarity != TotalClarity){
-            //     paragraph.innerHTML +="<p> You belatedly realise that you had not updated the clickable prototype to take into account your latest customer insights. To fix this, your engineers pull an all-nighter to update the clickable prototype. They are VERY unhappy</p>"
-            //     paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 30</p>"
-            //     changeSSV("TeamMorale", - 30)
-            //     sessionStorage.setItem("ClickableProto", TotalClarity)
-            // }
+            // high Fidelity Prototype test
+            var ProtoClarity = sessionStorage.getItem("HiFiProto")
+            paragraph.innerHTML +="<p> Just getting to this stage means that you were able to land on a compelling problem statement, enough to convince Patrick to assign you engineers to develop the prototype </p>"
+            paragraph.innerHTML +="<p> Having the clickable prototype allows you to let stakeholders in the policy and ground divisions directly try your solution, making it easier to get their buy-in. </p>"
+            paragraph.innerHTML +="<p class='health-status-growth'>Business Owner Confidence + 10</p>"
+            changeSSV("BusinessOwnerConfidence", 10)
+
+            if (TestPlanClarity==0){
+                paragraph.innerHTML +="<p> As the customer tests proceed, you realise you forgot to put together a test plan. While the quality of the product speaks for itself, you are unable to derive much further insight from the customers beyond simple satisfaction ratings.</p>"
+            } else{
+                paragraph.innerHTML +="<p> Your test plan included critical assumptions and key metrics.</p>"
+                paragraph.innerHTML +="<p> One guardrail metric helped you determine that customers were prematurely leaving one of the customer journeys, allowing you to zoom in on a key obstacle in the customer journey.</p>"
+                paragraph.innerHTML +="<p class='health-status-growth'>Customer Insight +10</p>"
+                changeSSV("CustomerInsight", 10)   
+                paragraph.innerHTML +="<p> You had also planned to measure your primary metric (conversion), which demonstrated conclusively to stakeholders that the web app had the potential for widespread acceptance. </p>"
+                paragraph.innerHTML +="<p class='health-status-growth'>Business Owner Confidence + 10</p>"
+                changeSSV("BusinessOwnerConfidence", 10)
+            }
         }
     }
     // reset TestPlan, hide the test prototype button again
     sessionStorage.setItem("WroteTestPlan",0)
     var buttontodisable = document.getElementById("testprotoButton");    
     buttontodisable.style.display = "none"
-
+    // disable the plantestbtn for now also
+    buttontodisable = document.getElementById("plantestButton");    
+    buttontodisable.style.display = "none"
     // update the health status
     updateHealth()
 }
@@ -723,6 +757,10 @@ function buildLoFiProto(){
                 changeSSV("TeamMorale", 10)            
             }
         }
+        // disable the no-fi prototype button
+        paragraph.innerHTML +="<p> Starting on the lo-fidelity prototype generally means you have landed on the solution space and are now working on the customer flow and structure. In the context of the tight time-line, no-fidelity prototypes have now been disabled. </p>"
+        var buttontodisable = document.getElementById("buildnofiButton");    
+        buttontodisable.style.display = "none"
     } else{
         if (LoFiProto==TotalClarity){
             paragraph.innerHTML ="<p> You waste time adjusting your prototype even though you have learnt nothing new. Andrea asks you whether you have had temporary amnesia.</p>"
@@ -739,18 +777,115 @@ function buildLoFiProto(){
     sessionStorage.setItem("LoFiProto", TotalClarity)
     sessionStorage.setItem("ProductReadiness", "Lo-Fidelity Prototype")
 
+
+
+    // rename the lo-fi prototype text
+    // var buttontorename = document.getElementById("buildlofibutton")
+    // buttontorename.textContent = "Refine lo-fidelity prototype (2 days)"
+    
+    //enable the plantestbutton and testprotobtn
+    var buttontoenable = document.getElementById("plantestButton");    
+    buttontoenable.style.display = "block"
+    buttontoenable = document.getElementById("testprotoButton");    
+    buttontoenable.style.display = "block"
+    buttontoenable.textContent = "Test Lo-Fi Prototype (3 days)"
+
+    // update the health status
+    updateHealth()
+}
+
+
+function buildHiFiProto(){
+    // move the mostrecent day into the past and increment the dayX
+    advancetheDay();
+    // get the current day
+    var dayX=+sessionStorage.getItem("DayX")
+    //    select Article with ID mostrecent
+    var article = document.getElementById("mostrecent");
+    // change the header to reflect current Day. Note this is a 3 day exercise 
+    var header = article.querySelector("header h4");
+    var paragraph = article.querySelector("p")
+    header.textContent = "Day " + dayX
+    dayX=dayX+2
+    header.textContent += " to Day " + dayX
+    sessionStorage.setItem("DayX", dayX)
+
+// pathing goes here
+var HiFiProto = +sessionStorage.getItem("HiFiProto")
+var ProblemStatementClarity = +sessionStorage.getItem("ProblemStatementClarity")
+var CustomerInsight = +sessionStorage.getItem("CustomerInsight")
+var TotalClarity = ProblemStatementClarity + CustomerInsight
+var WrittenProblemStatement = sessionStorage.getItem("WrittenProblemStatement")
+if (HiFiProto==0){
+    paragraph.innerHTML ="<p> Belinda, Chris, and Dean work closely with you and Andrea over the course of three days to turn your concept into a high-fidelity clickable prototype which you can use to conduct further testing and to explain the solution to stakeholders.</p>"
+
+    // determine whether there was a lo-fi prototype before this
+    if (sessionStorage.getItem("ProductReadiness")=="Lo-Fidelity Prototype"){
+        paragraph.innerHTML +="<p> The work that had gone into the previous lo-fidelity prototype makes it easier for the engineers to visualise the intended outcome, making discussions smoother and freeing up you and Andrea for other tasks.</p>"
+        paragraph.innerHTML +="<p> You spend that time cleaning up reports and preparing presentations to help stakeholders understand the choices you have made, generating organisational buy-in into your product.</p>"
+        paragraph.innerHTML +="<p class='health-status-growth'>Business Owner Confidence + 10</p>"
+        changeSSV("BusinessOwnerConfidence", 10)
+        paragraph.innerHTML +="<p> Andrea is also able to go through the customer experience with a fine toothed comb, and continues to tweak the customer journey</p>"
+        paragraph.innerHTML +="<p class='health-status-growth'>Customer Insight + 10</p>"
+        changeSSV("CustomerInsight", 10)
+    } else {
+// this means only a no-fidelity prototype was built
+        paragraph.innerHTML +="<p> Going straight from a no-fidelity prototype to a clickable prototype was always going to be difficult.</p>"
+        paragraph.innerHTML +="<p> In the end, all five of you go into crunch time together to ensure that the prototype is true to the project vision. You think you had 6 hours of sleep over those 3 nights!</p>"
+        paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 10</p>"
+        changeSSV("TeamMorale", -20)
+    }
+    if (WrittenProblemStatement==TotalClarity){
+        paragraph.innerHTML +="<p> Having an up-to-date written problem statement makes it easier for you to keep your discussions on track.</p>"
+        paragraph.innerHTML +="<p class='health-status-growth'>Team Morale + 10</p>"
+        changeSSV("TeamMorale", 10)            
+    }
     // disable the no-fi prototype button
-    paragraph.innerHTML +="<p> Starting on the lo-fidelity prototype generally means you have landed on the solution space and are now working on the customer flow and structure. In the context of the tight time-line, no-fidelity prototypes have now been disabled. </p>"
+    paragraph.innerHTML +="<p> Starting on the hi-fidelity prototype generally means you have zeroed in on the solution. Once you have committed resources to coding, and in the context of the tight time-line, lower-fidelity prototypes have now been disabled. </p>"
     var buttontodisable = document.getElementById("buildnofiButton");    
     buttontodisable.style.display = "none"
+    buttontodisable = document.getElementById("buildlofiButton");    
+    buttontodisable.style.display = "none"
+} else{
+    if (HiFiProto==TotalClarity){
+        paragraph.innerHTML ="<p> Since you have time to spare, you spend three more days refining the clickable prototype, resulting in a more polished piece of work.</p>"
+        paragraph.innerHTML +="<p class='health-status-growth'>Business Owner Confidence +10</p>"
+        changeSSV("BusinessOwnerConfidence", 10)
+    } else {
+        paragraph.innerHTML ="<p> You spend three days updating your prototype to take into account what you have learnt since you built it. You also manage to go through the processes one more time, resulting in a more polished piece of work.</p>"
+        paragraph.innerHTML +="<p class='health-status-growth'>Business Owner Confidence +10</p>"
+        changeSSV("BusinessOwnerConfidence", 10)
+    }
+}
+    // Set the clarity level of the HiFiPrototype, and update Readiness
+    ProblemStatementClarity = +sessionStorage.getItem("ProblemStatementClarity")
+    CustomerInsight = +sessionStorage.getItem("CustomerInsight")
+    TotalClarity = ProblemStatementClarity + CustomerInsight
+    sessionStorage.setItem("HiFiProto", TotalClarity)
+    sessionStorage.setItem("ProductReadiness", "Hi-Fidelity Prototype")
+
+    // rename the hi-fi prototype text
+    // var buttontorename = document.getElementById("buildhifibutton")
+    // buttontorename.textContent = "Refine hi-fidelity prototype (3 days)"
 
     //enable the plantestbutton and testprotobtn
     var buttontoenable = document.getElementById("plantestButton");    
     buttontoenable.style.display = "block"
     buttontoenable = document.getElementById("testprotoButton");    
     buttontoenable.style.display = "block"
-    buttontoenable.textContent = "Test Lo-Fi Prototype (4 days)"
+    buttontoenable.textContent = "Test Hi-Fi Prototype (3 days)"
+
 
     // update the health status
     updateHealth()
+}
+
+function concludeGame(){
+    //hide process menu
+    var hiddenDiv=document.getElementById("processmenu")
+    hiddenDiv.style.display='none';
+    //display game over text with button to save score
+    hiddenDiv=document.getElementById("concludegame")
+    hiddenDiv.style.display='block';
+    
 }

@@ -46,6 +46,28 @@ app.get('/about', function(req, res) {
     res.render('pages/about');
 });
 
+// Top scores page
+app.get('/topscores', async function(req, res) {
+
+  // Try-Catch for any errors
+  try {
+      // Get all topscores posts
+      const blogs = await prisma.post.findMany({
+              orderBy: [
+                {
+                  id: 'desc'
+                }
+              ]
+      });
+
+      // Render the homepage with all the blog posts
+      await res.render('pages/topscores', { blogs: blogs });
+    } catch (error) {
+      res.render('pages/topscores');
+      console.log(error);
+    } 
+});
+
 // New post page
 app.get('/new', function(req, res) {
     res.render('pages/new');
