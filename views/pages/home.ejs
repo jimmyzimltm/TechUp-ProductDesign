@@ -63,7 +63,7 @@
                 <p></p>
         </article>
 
-        <div class="conclude-game-container" id="concludegame">
+        <div class="conclude-game-containe" id="concludegame">
             <H4>Game over!</H4>
             Thank you for playing. Your product is moving forward to production. Your scores are:
             <form method="post">
@@ -332,16 +332,7 @@
            <a href="/new" class="button" role="button">+ New Post</a>
         </div>
 
-        <!-- Show blog posts -->
-        <% blogs.forEach(post => { %>
-            <article class="post-container">
-                <h3><%= post.title %></h3>
-                <p><%= post.content %></p>
-                <form action="/delete/<%= post.id %>" method="post" onsubmit="return confirm('Do you really want to delete this post?');">
-                    <button class="outline primary" type="submit">Delete</button>
-                </form>
-            </article>
-        <% }); %>
+
     </main>
 </body>
 </html>

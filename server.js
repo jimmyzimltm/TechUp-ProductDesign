@@ -21,24 +21,7 @@ const prisma = new PrismaClient();
 
 // Main landing page
 app.get('/', async function(req, res) {
-
-    // Try-Catch for any errors
-    try {
-        // Get all blog posts
-        const blogs = await prisma.post.findMany({
-                orderBy: [
-                  {
-                    id: 'desc'
-                  }
-                ]
-        });
-
-        // Render the homepage with all the blog posts
-        await res.render('pages/home', { blogs: blogs });
-      } catch (error) {
-        res.render('pages/home');
-        console.log(error);
-      } 
+  res.render('pages/home');
 });
 
 // About page
@@ -51,8 +34,8 @@ app.get('/topscores', async function(req, res) {
 
   // Try-Catch for any errors
   try {
-      // Get all topscores posts
-      const blogs = await prisma.post.findMany({
+      // Get all topscores 
+      const savedscores = await prisma.post.findMany({
               orderBy: [
                 {
                   id: 'desc'
@@ -61,7 +44,7 @@ app.get('/topscores', async function(req, res) {
       });
 
       // Render the homepage with all the blog posts
-      await res.render('pages/topscores', { blogs: blogs });
+      await res.render('pages/topscores', { savedscores: savedscores });
     } catch (error) {
       res.render('pages/topscores');
       console.log(error);
@@ -100,6 +83,35 @@ app.post('/new', async function(req, res) {
       }
 
 });
+
+// Save score from home
+app.post('/', async function(req, res) {
+    
+  // Try-Catch for any errors
+  try {
+      // Get the title and content from submitted form
+      const { title, content } = req.body;
+
+      // Reload page if empty title or content
+      if (!title || !content) {
+          console.log("Unable to create new post, no title or content");
+          res.render('pages/new');
+      } else {
+          // Create post and store in database
+          const blog = await prisma.post.create({
+              data: { title, content },
+          });
+
+          // Redirect back to the homepage
+          res.redirect('/');
+      }
+    } catch (error) {
+      console.log(error);
+      res.render('pages/new');
+    }
+
+});
+
 
 // Delete a post by id
 app.post("/delete/:id", async (req, res) => {

@@ -30,17 +30,21 @@
             <p>See all the top scores below </p>
 
         </div>
-
+        <table>
         <!-- Show top scores -->
-        <% blogs.forEach(post => { %>
-            <article class="post-container">
-                <h3><%= post.title %></h3>
-                <p><%= post.content %></p>
-                <!-- <form action="/delete/<%= post.id %>" method="post" onsubmit="return confirm('Do you really want to delete this post?');">
-                    <button class="outline primary" type="submit">Delete</button>
-                </form> -->
-            </article>
+        <% savedscores.forEach(post => { %>
+          
+                <tr>
+                    <td><%= post.title %></td>
+                    <td><%= post.content %></td>
+                    <!-- <td>                
+                        <form action="/delete/<%= post.id %>" method="post" onsubmit="return confirm('Do you really want to delete this score?');">
+                        <button class="outline primary" type="submit">Delete</button>
+                        </form>
+                    </td> -->
+                </tr>
         <% }); %>
+        </table>
     </main>
 </body>
 </html>
