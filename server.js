@@ -38,7 +38,7 @@ app.get('/topscores', async function(req, res) {
       const savedscores = await prisma.post.findMany({
               orderBy: [
                 {
-                  id: 'desc'
+                  score: 'desc'
                 }
               ]
       });
@@ -52,9 +52,9 @@ app.get('/topscores', async function(req, res) {
 });
 
 // New post page
-app.get('/new', function(req, res) {
-    res.render('pages/new');
-});
+// app.get('/new', function(req, res) {
+//     res.render('pages/new');
+// });
 
 // Create a new post
 app.post('/new', async function(req, res) {

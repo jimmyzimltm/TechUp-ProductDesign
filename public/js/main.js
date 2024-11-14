@@ -894,4 +894,7 @@ function concludeGame(){
     var finalscore = ProblemStatementClarity+CustomerInsight+TeamMorale+BusinessOwnerConfidence
     var scorereport = document.getElementById("scorereport")
     scorereport.textContent = "Your total score is " + finalscore
+    // send the final score into the score box
+    scorereport = document.getElementById("scoresaver")
+    scorereport.value=finalscore
 }

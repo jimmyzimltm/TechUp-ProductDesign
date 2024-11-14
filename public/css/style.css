@@ -46,6 +46,10 @@
     display: none; /* The menu is hidden until conditions are met */
 }
 
+.hidden-score-saver{
+    display:none
+}
+
 .health-status-growth{
     color: green
 }

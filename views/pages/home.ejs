@@ -65,7 +65,8 @@
 
         <div class="conclude-game-container" id="concludegame">
             <H4>Game over!</H4>
-            Thank you for playing. Your product is now moving forward to production. <span id="scorereport">123</span>
+            Thank you for playing. Your product is now moving forward to production.
+            <H6><span id="scorereport">123</span></H6>
             <form method="post">
                 <fieldset>
                   <label>
@@ -75,14 +76,13 @@
                 </fieldset>
 
                 <label>
-                Content
-                <input name="score" type="number" />
+                <input name="score" type="number" id="scoresaver" class="hidden-score-saver" />
                 </label>
 
 
                 <input
                   type="submit"
-                  value="🚀 Save your high score"
+                  value="🚀 Put in your username to save your score"
                 />
               </form>
         </div>
@@ -328,9 +328,9 @@
         </article>
 
         
-        <div class="new-post-btn-container">
+        <!-- <div class="new-post-btn-container">
            <a href="/new" class="button" role="button">+ New Post</a>
-        </div>
+        </div> -->
 
 
     </main>
