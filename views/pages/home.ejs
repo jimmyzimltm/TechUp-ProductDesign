@@ -28,7 +28,7 @@
         <!-- Welcome information -->
         <div class="topline-container">
             <h1>Welcome to Product Design Game</h1>
-            <p>Your mission, should you choose to accept it, is to navigate a product design journey. Acting as a the product manager placed in charge of a new web app, your goal is to get the web app to the best possible start in its first 4 weeks (or 20 working days). </p>
+            <p>Your mission, should you choose to accept it, is to navigate a product design journey. Acting as a the product manager placed in charge of a new web app, your goal is to get the web app to the best possible start in its first 4 weeks (or 20 working days). At the end of that time, your product will automatically move into MVP development and your score will be computed. </p>
             <!-- TODO: Start by telling us your name -->
             <a onClick="resetVariables()" class="button" role="button" id="startButton">Start</a>
         </div>
@@ -68,22 +68,19 @@
         <H4>What do you wish to do next?</H4>
          <table>
             <TR>
-                <TD><a onClick="buildPaperProto()" class="button" role="button" id="buildpaperButton">Build paper prototype (1 day)</a></TD>
-                <TD>Build figma prototype</TD>
+                <TD><a onClick="buildNoFiProto()" class="button" role="button" id="buildnofiButton">Build no-fidelity prototype (1 day)</a></TD>
+                <TD><a onClick="buildLoFiProto()" class="button" role="button" id="buildlofiButton">Build lo-fidelity prototype (2 days)</a></TD>
                 <TD>Build clickable prototype</TD>
-                <TD>Build MVP web app</TD>
             </TR>
             <TR>
                 <TD><a onClick="interviewPolicyOwner()" class="button" role="button" id="policyownerButton">Interview policy owner (1 day)</a></TD>
                 <TD><a onClick="interviewGroundDivision()" class="button" role="button" id="grounddivisionButton">Interview ground division (1 day)</a></TD>
                 <TD><a onClick="testProto()" class="button" role="button" id="testprotoButton">Test Prototype with Customers</a></TD>
-                <TD></TD>
             </TR>
             <TR>
                 <TD><a onClick="observeCustomers()" class="button" role="button" id="observationButton">Observe customers in natural environment (3 days)</a></TD>
                 <TD><a onClick="writeProblemStatement()" class="button" role="button" id="writepsButton">Write Problem Statement (1 day)</a></TD>
                 <TD><a onClick="planProtoTest()" class="button" role="button" id="plantestButton">Plan Prototype Tests (2 days)</a></TD>
-                <TD></TD>
             </TR>
           </table>   
         </div>
@@ -91,7 +88,7 @@
 
 
 
-        <!-- Setup series of descending days dialogues for filling. We used CSS to set all to hidden, at the start; these will be filled one at a time as we play, scrolling to the top-->
+        <!-- Setup series of descending days dialogues for filling. Use CSS to set all to hidden, at the start; these will be filled one at a time as we play, scrolling to the top-->
         <article class="event-container" id="event30">
             <header>
                 <h4></h4>

@@ -14,14 +14,15 @@ function resetVariables(){
     sessionStorage.setItem("InterviewedGroundDivision",0)
     sessionStorage.setItem("WrittenProblemStatement",0)
     sessionStorage.setItem("ObservedCustomers",0)
-    sessionStorage.setItem("PaperProto",0)
+    sessionStorage.setItem("NoFiProto",0)
+    sessionStorage.setItem("NoFiProtoResult",0)
+    sessionStorage.setItem("LoFiProto",0)
     sessionStorage.setItem("WroteTestPlan",0) 
     
     sessionStorage.setItem("CustomerInterviews",0)
     sessionStorage.setItem("EngineersHired",false)
 
     
-    sessionStorage.setItem("FigmaProto",0)
     sessionStorage.setItem("ClickableProto",0)
     //call once to show health variables
     updateHealth()
@@ -45,6 +46,8 @@ for (let eventday=1; eventday<31; eventday++) {
     buttontoenable.style.display = "block"
     buttontoenable = document.getElementById("observationButton");    
     buttontoenable.style.display = "block"
+    buttontoenable = document.getElementById("buildnofiButton");    
+    buttontoenable.style.display = "block"
 
     var buttontodisable = document.getElementById("plantestButton");    
     buttontodisable.style.display = "none"
@@ -52,7 +55,6 @@ for (let eventday=1; eventday<31; eventday++) {
     buttontodisable.style.display = "none"
     buttontodisable.textContent = "Test Prototype"
     
-
     document.getElementById("startButton").textContent = "Go back to Day 1";
 
 // Kick off Day 1 
@@ -113,9 +115,8 @@ function advancetheDay(){
     // and make the matching element visible
     pastarticle.style.display = "block"
     // advance the day count
-    //    dayX=dayX+1
-    //    sessionStorage.setItem("DayX", dayX)
-    sessionStorage.setItem("DayX",+sessionStorage.getItem("DayX")+1)
+    changeSSV("DayX",1)
+    // sessionStorage.setItem("DayX",+sessionStorage.getItem("DayX")+1)
     alert("After = Day " + sessionStorage.getItem("DayX"));
 }
 
@@ -391,7 +392,7 @@ function observeCustomers(){
 }
 
 
-function buildPaperProto(){
+function buildNoFiProto(){
     // move the mostrecent day into the past and increment the dayX
     advancetheDay();
     // get the current day
@@ -404,33 +405,33 @@ function buildPaperProto(){
     header.textContent = "Day " + dayX
     
     // Pathing really depends on how much total clarity they have in various categories. Simple version here
-    var PaperProto = +sessionStorage.getItem("PaperProto")
+    var NoFiProto = +sessionStorage.getItem("NoFiProto")
     var ProblemStatementClarity = +sessionStorage.getItem("ProblemStatementClarity")
     var CustomerInsight = +sessionStorage.getItem("CustomerInsight")
     var TotalClarity = ProblemStatementClarity + CustomerInsight
     var WrittenProblemStatement = sessionStorage.getItem("WrittenProblemStatement")
-    if (PaperProto==0){
+    if (NoFiProto==0){
         if (ProblemStatementClarity==10){
             if (CustomerInsight==0){
-                paragraph.innerHTML ="<p> You dive into solutioning a paper prototype without having interviewed the policy owner, thought about the deeper implications of the work, or looked at how customers might be affected.</p>"
-                paragraph.innerHTML +="<p> After a lot of back and forth, you emerge with an almost purely theoretical paper prototype based on a hypothetical customer, but neither you nor Andrea have much confidence in the product.</p>"
+                paragraph.innerHTML ="<p> You dive into solutioning without having interviewed the policy owner, thought about the deeper implications of the work, or looked at how customers might be affected.</p>"
+                paragraph.innerHTML +="<p> After a lot of back and forth, you emerge with an almost purely theoretical solution based on a hypothetical customer, but neither you nor Andrea have much confidence in the product.</p>"
                 paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 20</p>"
                 changeSSV("TeamMorale", - 20)
             } else {
-                paragraph.innerHTML ="<p> You dive into solutioning a paper prototype without having interviewed the policy owner or thought about the deeper implications of the work. Thankfully you have studied the customer somewhat and have some useful insights to contribute.</p>"
-                paragraph.innerHTML +="<p> The back and forth on the paper prototype is quite frustrating as you and Andrea struggle to reach agreement on what the key problem to solve is.</p>"
+                paragraph.innerHTML ="<p> You dive into solutioning without having interviewed the policy owner or thought about the deeper implications of the work. Thankfully you have studied the customer somewhat and have some useful insights to contribute.</p>"
+                paragraph.innerHTML +="<p> The back and forth on the solutioning is quite frustrating as you and Andrea struggle to reach agreement on what the key problem to solve is.</p>"
                 paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 10</p>"
                 changeSSV("TeamMorale", - 10)
             }
         } else {
             if (CustomerInsight==0){
-                paragraph.innerHTML ="<p> You dive into solutioning a paper prototype with some clarity on the problem statement, but without having studied the customer.</p>"
-                paragraph.innerHTML +="<p> As a result, the back and forth on the paper prototype is quite frustrating as you and Andrea struggle to reach agreement on how customers would be served by the web app.</p>"
+                paragraph.innerHTML ="<p> You dive into solutioning with some clarity on the problem statement, but without having studied the customer.</p>"
+                paragraph.innerHTML +="<p> As a result, the back and forth on the solutioning is quite frustrating as you and Andrea struggle to reach agreement on how customers would be served by the web app.</p>"
                 paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 10</p>"
                 changeSSV("TeamMorale", - 10)
             } else {
-                paragraph.innerHTML ="<p> You dive into solutioning a paper prototype with some clarity on both the problem statement and the underlying customer experiences.</p>"
-                paragraph.innerHTML +="<p> As a result, the back and forth on the paper prototype is quite productive and actually helps you develop better clarity on the problem statement.</p>"
+                paragraph.innerHTML ="<p> You dive into solutioning with some clarity on both the problem statement and the underlying customer experiences.</p>"
+                paragraph.innerHTML +="<p> As a result, the back and forth on the solutioning is quite productive and actually helps you develop better clarity on the problem statement.</p>"
                 paragraph.innerHTML +="<p class='health-status-growth'>Problem Statement Clarity + 10</p>"
                 changeSSV("ProblemStatementClarity", 10)            
             }
@@ -441,27 +442,33 @@ function buildPaperProto(){
             }
         }
     } else{
-        if (PaperProto==TotalClarity){
-            paragraph.innerHTML ="<p> You waste a day adjusting your paper prototype even though you have learnt nothing new. Andrea asks you whether you have had temporary amnesia.</p>"
+        if (NoFiProto==TotalClarity){
+            paragraph.innerHTML ="<p> You waste a day adjusting your concept even though you have learnt nothing new. Andrea asks you whether you have had temporary amnesia.</p>"
             paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 10</p>"
             changeSSV("TeamMorale", - 10)
         } else {
-            paragraph.innerHTML ="<p> You spend a day updating your paper prototype to take into account what you have learnt since you last built it.</p>"
+            var NoFiProtoResult = +sessionStorage.getItem("NoFiProtoResult")
+            if (NoFiProtoResult == 0){
+                paragraph.innerHTML ="<p> You spend a day updating your concept to take into account what you have learnt since you last built it.</p>"
+            } else {
+                paragraph.innerHTML ="<p> You spend a day updating your concept to take into account what you learnt from the customer tests.</p>"
+                sessionStorage.setItem("NoFiProtoResult",0)
+            }
         }
     }
-    // Set the clarity level of the PaperPrototype, and update Readiness
+    // Set the clarity level of the No-fi prototype, and update Readiness
     ProblemStatementClarity = +sessionStorage.getItem("ProblemStatementClarity")
     CustomerInsight = +sessionStorage.getItem("CustomerInsight")
     TotalClarity = ProblemStatementClarity + CustomerInsight
-    sessionStorage.setItem("PaperProto", TotalClarity)
-    sessionStorage.setItem("ProductReadiness", "Paper Prototype")
+    sessionStorage.setItem("NoFiProto", TotalClarity)
+    sessionStorage.setItem("ProductReadiness", "No-Fidelity Prototype")
 
     //enable the plantestbutton and testprotobtn
     var buttontoenable = document.getElementById("plantestButton");    
     buttontoenable.style.display = "block"
     buttontoenable = document.getElementById("testprotoButton");    
     buttontoenable.style.display = "block"
-    buttontoenable.textContent = "Test Paper Prototype (4 days)"
+    buttontoenable.textContent = "Test No-Fi Prototype (4 days)"
 
     // update the health status
     updateHealth()
@@ -479,7 +486,7 @@ function planProtoTest(){
     var header = article.querySelector("header h4");
     var paragraph = article.querySelector("p")
     header.textContent = "Day " + dayX
-    dayX=dayX+2
+    dayX=dayX+1
     header.textContent += " to Day " + dayX
     sessionStorage.setItem("DayX", dayX)
     
@@ -491,25 +498,25 @@ function planProtoTest(){
 
     // check which prototype you are testing for and load ProtoClarity
     var ProtoToTest = sessionStorage.getItem("ProductReadiness")
-    if (sessionStorage.getItem("ProductReadiness")=="Paper Prototype"){
-        var ProtoClarity = sessionStorage.getItem("PaperProto")
+    if (sessionStorage.getItem("ProductReadiness")=="No-Fidelity Prototype"){
+        var ProtoClarity = sessionStorage.getItem("NoFiProto")
  //       alert("Protoclarity " + ProtoClarity+" vs TotalClarity " + TotalClarity)
         if (ProtoClarity != TotalClarity){
-            paragraph.innerHTML +="<p> You belatedly realise that you had not updated the paper prototype to take into account your latest customer insights. To fix this, you and Andrea pull an all-nighter to update the paper prototype.</p>"
+            paragraph.innerHTML +="<p> You belatedly realise that you had not updated the solution to take into account your latest customer insights. To fix this, you and Andrea work till midnight to update your concept and sync your language.</p>"
             paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 10</p>"
             changeSSV("TeamMorale", - 10)
-            sessionStorage.setItem("PaperProto", TotalClarity)
+            sessionStorage.setItem("NoFiProto", TotalClarity)
         }
-        // For Paper Prototype, the most important fit is ProblemStatementClarity
+        // For NoFi Prototype, the most important fit is ProblemStatementClarity
         sessionStorage.setItem("WroteTestPlan",ProblemStatementClarity)
     } else {
-        if (sessionStorage.getItem("ProductReadiness")=="Figma Prototype"){
-            var ProtoClarity = sessionStorage.getItem("FigmaProto")
+        if (sessionStorage.getItem("ProductReadiness")=="Lo-Fidelity Prototype"){
+            var ProtoClarity = sessionStorage.getItem("LoFiProto")
             if (ProtoClarity != TotalClarity){
-                paragraph.innerHTML +="<p> You belatedly realise that you had not updated the paper prototype to take into account your latest customer insights. To fix this, Andrea pulls an all-nighter to update the figma prototype.</p>"
+                paragraph.innerHTML +="<p> You belatedly realise that you had not updated the prototype to take into account your latest customer insights. To fix this, Andrea pulls an all-nighter to update the figma prototype.</p>"
                 paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 20</p>"
                 changeSSV("TeamMorale", - 20)
-                sessionStorage.setItem("FigmaProto", TotalClarity)
+                sessionStorage.setItem("LoFiProto", TotalClarity)
             }
             sessionStorage.setItem("WroteTestPlan",TotalClarity)
         } else {
@@ -542,7 +549,7 @@ function testProto(){
     var header = article.querySelector("header h4");
     var paragraph = article.querySelector("p")
     header.textContent = "Day " + dayX
-    dayX=dayX+4
+    dayX=dayX+3
     header.textContent += " to Day " + dayX
     sessionStorage.setItem("DayX", dayX)
 
@@ -555,33 +562,35 @@ function testProto(){
     paragraph.innerHTML +="<p> 1 day was spent recruiting customers, 2 days were spent conducting the interviews, and 1 day consolidating the findings and reporting to Patrick.</p>"
 
     // check which prototype you are testing for 
-    if (sessionStorage.getItem("ProductReadiness")=="Paper Prototype"){
-        // Paper Prototypes are meant to test Problem Statement fit cheaply
+    if (sessionStorage.getItem("ProductReadiness")=="No-Fidelity Prototype"){
+        // No-fidelity Prototypes are meant to quickly test Problem Statement fit and early concepts
         if (ProblemStatementClarity >60){
-            paragraph.innerHTML +="<p> The paper prototype is strikingly successful. Customers interacting with the the prototype give many signals about how well the proposed solution would meet their needs, and even add more ideas for features they would like to see.</p>"
+            paragraph.innerHTML +="<p> The no-fidelity prototype is strikingly successful. Customers interacting with you give many signals about how well the proposed solution would meet their needs, and even add more ideas for features they would like to see.</p>"
             paragraph.innerHTML +="<p class='health-status-growth'>Problem Statement Clarity +10</p>"
             changeSSV("ProblemStatementClarity", 10)
+            sessionStorage.setItem("NoFiProtoResult",2)
             if(TestPlanClarity==0){
-                paragraph.innerHTML +="<p> The high level of acceptance of the prototype gives the team a shot of confidence. However, the lack of a well-written test plan meant that many of the interviews meandered to the new features requested by customers, rather than focusing on what customers liked about the features of the prototype. This was a missed opportunity to show stakeholders the value of the proposed solution</p>"
+                paragraph.innerHTML +="<p> The high level of acceptance of the proposed solution gives the team a shot of confidence. However, the lack of a well-written test plan meant that many of the interviews meandered to the new features requested by customers, rather than focusing on what customers liked about the features of the prototype. This was a missed opportunity to show stakeholders the value of the proposed solution</p>"
                 paragraph.innerHTML +="<p class='health-status-growth'>Team Morale + 10, Business Owner Confidence +0</p>"
                 changeSSV("TeamMorale", 10)
             } else {
-                paragraph.innerHTML +="<p> The high level of acceptance of the prototype gives the team a shot of confidence. When the findings are emailed to the respective stakeholders, the respective division directors reply positively with support for the direction the team is taking.</p>"
+                paragraph.innerHTML +="<p> The high level of acceptance of the proposed solution gives the team a shot of confidence. When the report is sent to the respective stakeholders, the respective division directors reply positively with support for the direction the team is taking.</p>"
                 paragraph.innerHTML +="<p class='health-status-growth'>Team Morale + 10, Business Owner Confidence +20</p>"
                 changeSSV("TeamMorale", 10)
                 changeSSV("BusinessOwnerConfidence", 20)
             }
         } else {
-            paragraph.innerHTML +="<p> The paper prototype turns out to miss the mark. Customers interacting with the prototype reject the underlying premise. This is somewhat discouraging for Andrea and you, that you seem to have missed the mark. Although Patrick tries to encourage the team, when you email the report to stakeholder divisions, the email is met with a somewhat stony silence. </p>"
+            paragraph.innerHTML +="<p> The proposed solution misses the mark due to lack of understanding of the underlying issues. Customers interviewed  reject the proposed solution. This is somewhat discouraging for Andrea and you, that you seem to have missed the mark. Although Patrick tries to encourage the team, when you email the report to stakeholder divisions, the email is met with a somewhat stony silence. </p>"
             paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 10, Business Owner Confidence - 10</p>"
             changeSSV("TeamMorale", -10)
             changeSSV("BusinessOwnerConfidence", -10)
+            sessionStorage.setItem("NoFiProtoResult",1)
             if (TestPlanClarity==0){
                 paragraph.innerHTML +="<p> Without a test plan, the facilitators struggle to capture the views of customers coherently. While you still get some useful insights to help pivot the solution, you feel that you missed an opportunity.</p>"
                 paragraph.innerHTML +="<p class='health-status-growth'>Problem Statement Clarity + 10</p>"
                 changeSSV("ProblemStatementClarity", 10)
             } else {
-                paragraph.innerHTML +="<p> However, the well-written test plan allows the facilitators to quickly pivot towards developing and fleshing out other hypotheses about the problem statement and the customer journey.</p>"
+                paragraph.innerHTML +="<p> However, the well-written test plan allows the facilitators to quickly pivot towards developing and fleshing out other hypotheses about and alternativee solutions to the problem statement.</p>"
                 paragraph.innerHTML +="<p class='health-status-growth'>Problem Statement Clarity + 20, Customer Insight + 10</p>"
                 changeSSV("ProblemStatementClarity", 20)
                 changeSSV("CustomerInsight", 10)
@@ -606,11 +615,116 @@ function testProto(){
         //     }
         // }
     }
-    // reset TestPlan
+    // reset TestPlan, hide the test prototype button again
     sessionStorage.setItem("WroteTestPlan",0)
-    // hide the test prototype button again
     var buttontodisable = document.getElementById("testprotoButton");    
     buttontodisable.style.display = "none"
+
+    // update the health status
+    updateHealth()
+}
+
+
+function buildLoFiProto(){
+    // move the mostrecent day into the past and increment the dayX
+    advancetheDay();
+    // get the current day
+    var dayX=+sessionStorage.getItem("DayX")
+    //    select Article with ID mostrecent
+    var article = document.getElementById("mostrecent");
+    // change the header to reflect current Day. Note this is a 2 day exercise 
+    var header = article.querySelector("header h4");
+    var paragraph = article.querySelector("p")
+    header.textContent = "Day " + dayX
+    dayX=dayX+1
+    header.textContent += " to Day " + dayX
+    sessionStorage.setItem("DayX", dayX)
+
+    // Pathing really depends on how much total clarity they have in various categories. Simple version here
+    var LoFiProto = +sessionStorage.getItem("LoFiProto")
+    var ProblemStatementClarity = +sessionStorage.getItem("ProblemStatementClarity")
+    var CustomerInsight = +sessionStorage.getItem("CustomerInsight")
+    var TotalClarity = ProblemStatementClarity + CustomerInsight
+    var WrittenProblemStatement = sessionStorage.getItem("WrittenProblemStatement")
+    if (LoFiProto==0){
+        if (ProblemStatementClarity==10){
+            if (CustomerInsight==0){
+                paragraph.innerHTML ="<p> You dive into solutioning a lo-fidelity (paper or figma) prototype without having interviewed the policy owner, thought about the deeper implications of the work, or looked at how customers might be affected.</p>"
+                paragraph.innerHTML +="<p> After a lot of back and forth, you emerge with an almost purely theoretical prototype based on a hypothetical customer, but neither you nor Andrea have much confidence in the product.</p>"
+                paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 20</p>"
+                changeSSV("TeamMorale", - 20)
+            } else {
+                paragraph.innerHTML ="<p> You dive into solutioning a lo-fidelity (paper or figma) prototype without having interviewed the policy owner or thought about the deeper implications of the work. Thankfully you have studied the customer somewhat and have some useful insights to contribute.</p>"
+                paragraph.innerHTML +="<p> The back and forth on the prototype is quite frustrating as you and Andrea struggle to reach agreement on what the key problem to solve is.</p>"
+                paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 10</p>"
+                changeSSV("TeamMorale", - 10)
+            }
+        } else {
+            if (CustomerInsight==0){
+                paragraph.innerHTML ="<p> You dive into solutioning a lo-fidelity (paper or figma) prototype with some clarity on the problem statement, but without having studied the customer.</p>"
+                paragraph.innerHTML +="<p> As a result, the back and forth on the prototype is quite frustrating as you and Andrea struggle to reach agreement on how customers would be served by the web app.</p>"
+                paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 10</p>"
+                changeSSV("TeamMorale", - 10)
+            } else {
+                var NoFiProto = +sessionStorage.getItem("NoFiProto")
+                var NoFiProtoResult = +sessionStorage.getItem("NoFiProtoResult")
+                if (NoFiProto==0){
+                // ie no-fi prototype was not created
+                    paragraph.innerHTML ="<p> You dive into solutioning a lo-fidelity (paper or figma prototype) with some clarity on both the problem statement and the underlying customer experiences.</p>"
+                    paragraph.innerHTML +="<p> As a result, the back and forth on the prototype is quite productive and actually helps you develop better clarity on the problem statement.</p>"
+                    paragraph.innerHTML +="<p class='health-status-growth'>Problem Statement Clarity + 10</p>"
+                    changeSSV("ProblemStatementClarity", 10)
+                } else {
+                    if (NoFiProtoResult == 0){
+                        paragraph.innerHTML ="<p> Having thought through and articulated the solution space in no-fidelity makes it easier to build the lo-fidelity prototype, even though it is a pity that the current proposed solution was never tested with customers.</p>"
+                        paragraph.innerHTML +="<p class='health-status-growth'>Team Morale + 10</p>"
+                        changeSSV("TeamMorale", 10)
+                        } else if (NoFiProtoResult == 1) {
+                            paragraph.innerHTML ="<p> Even though you had developed a no-fidelity prototype earlier, the tests had invalidated the underlying solution hypothesis.</p>"
+                            paragraph.innerHTML +="<p> The new lo-fidelity prototype is built on the learnings from the customer tests, and putting it together helps the team to fully internalise what you learnt from the customer test.</p>"
+                            paragraph.innerHTML +="<p class='health-status-growth'>Problem Statement Clarity + 10, Customer Insight +10</p>"
+                            changeSSV("ProblemStatementClarity", 10)
+                            changeSSV("CustomerInsight", 10)                                
+                        } else {
+                            paragraph.innerHTML ="<p> Having thought through and tested the solution space in no-fidelity makes it much easier to build the lo-fidelity prototype, incorporating the insights captured from the customer test.</p>"
+                            paragraph.innerHTML +="<p class='health-status-growth'>Team Morale + 10</p>"
+                            changeSSV("TeamMorale", 10)
+                        } 
+                }         
+            }
+            if (WrittenProblemStatement==TotalClarity){
+                paragraph.innerHTML +="<p> Having an up-to-date written problem statement makes it easier for you to keep your discussions on track.</p>"
+                paragraph.innerHTML +="<p class='health-status-growth'>Team Morale + 10</p>"
+                changeSSV("TeamMorale", 10)            
+            }
+        }
+    } else{
+        if (LoFiProto==TotalClarity){
+            paragraph.innerHTML ="<p> You waste time adjusting your prototype even though you have learnt nothing new. Andrea asks you whether you have had temporary amnesia.</p>"
+            paragraph.innerHTML +="<p class='health-status-loss'>Team Morale - 10</p>"
+            changeSSV("TeamMorale", - 10)
+        } else {
+            paragraph.innerHTML ="<p> You spend time updating your prototype to take into account what you have learnt since you built it.</p>"
+        }
+    }
+    // Set the clarity level of the LoFiPrototype, and update Readiness
+    ProblemStatementClarity = +sessionStorage.getItem("ProblemStatementClarity")
+    CustomerInsight = +sessionStorage.getItem("CustomerInsight")
+    TotalClarity = ProblemStatementClarity + CustomerInsight
+    sessionStorage.setItem("LoFiProto", TotalClarity)
+    sessionStorage.setItem("ProductReadiness", "Lo-Fidelity Prototype")
+
+    // disable the no-fi prototype button
+    paragraph.innerHTML +="<p> Starting on the lo-fidelity prototype generally means you have landed on the solution space and are now working on the customer flow and structure. In the context of the tight time-line, no-fidelity prototypes have now been disabled. </p>"
+    var buttontodisable = document.getElementById("buildnofiButton");    
+    buttontodisable.style.display = "none"
+
+    //enable the plantestbutton and testprotobtn
+    var buttontoenable = document.getElementById("plantestButton");    
+    buttontoenable.style.display = "block"
+    buttontoenable = document.getElementById("testprotoButton");    
+    buttontoenable.style.display = "block"
+    buttontoenable.textContent = "Test Lo-Fi Prototype (4 days)"
 
     // update the health status
     updateHealth()
