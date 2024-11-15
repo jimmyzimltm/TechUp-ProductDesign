@@ -12,6 +12,10 @@
     margin-right: auto;
 }
 
+.emphasis{
+    font-weight: bold;
+}
+
 .statusdisplay{
     text-align: center
 }

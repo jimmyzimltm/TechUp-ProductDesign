@@ -91,17 +91,21 @@ app.post('/', async function(req, res) {
   // Try-Catch for any errors
   try {
       // Get the title and content from submitted form
-      const { username, score } = req.body;
+      const { username, score, psc, insight, morale, boc} = req.body;
 
       // Reload page if empty title or content
       if (!username || !score) {
-          console.log("Unable to create new post, no title or content");
-          res.render('pages/new');
+          console.log("Unable to create saved score, no username");
       } else {
           // Create post and store in database
           const parsedScore = parseInt(score, 10);
+          const parsedPsc = parseInt(psc, 10);
+          const parsedInsight = parseInt(insight, 10);
+          const parsedMorale = parseInt(morale, 10);
+          const parsedBoc = parseInt(boc, 10);
+
           const blog = await prisma.post.create({
-              data: { username, score:parsedScore },
+              data: { username, score:parsedScore, psc:parsedPsc, insight:parsedInsight, morale:parsedMorale, boc:parsedBoc },
           });
 
           // Redirect back to the homepage

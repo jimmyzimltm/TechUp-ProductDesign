@@ -26,21 +26,29 @@
 
         <!-- Welcome information -->
         <div class="topline-container">
-            <h1>🏆Top Scores🏆</h1>
+            <h1>🏆Leaderboard🏆</h1>
             <p>See all the top scores so far</p>
 
         </div>
         <table>
             <TR>
-                <TD> UserName </TD>
-                <TD> Score </TD>
+                <TD class="emphasis"> UserName </TD>
+                <TD class="emphasis"> <span class="emoji">📦</span>Total Score </TD>
+                <TD> <span class="emoji">🔎</span>Problem Statement Clarity </TD>
+                <TD> <span class="emoji">💭</span>Customer Insight </TD>
+                <TD> <span class="emoji">💖</span>Team Morale </TD>
+                <TD> <span class="emoji">💪</span>Business Owner Confidence</TD>
             </TR>
         <!-- Show top scores -->
         <% savedscores.forEach(post => { %>
           
                 <tr>
-                    <td><%= post.username %></td>
-                    <td><%= post.score %></td>
+                    <td class="emphasis"><%= post.username %></td>
+                    <td class="emphasis"><%= post.score %></td>
+                    <td><%= post.psc %></td>
+                    <td><%= post.insight %></td>
+                    <td><%= post.morale %></td>
+                    <td><%= post.boc %></td>
                     <!-- <td>                
                         <form action="/delete/<%= post.id %>" method="post" onsubmit="return confirm('Do you really want to delete this score?');">
                         <button class="outline primary" type="submit">Delete</button>

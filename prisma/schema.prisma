@@ -18,4 +18,8 @@ model Post {
   id        Int       @id @default(autoincrement())
   username  String
   score     Int
+  psc       Int
+  insight   Int
+  morale    Int
+  boc       Int
 }

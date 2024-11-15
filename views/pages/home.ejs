@@ -36,17 +36,15 @@
         <!-- This is the health-status display, that shows that the player's status is on various top indicators -->
         <div class="health-display-container">
         <!-- TODO: To add icons and beautify -->
-        These 5 indicators track how well you are doing towards delivering a solution for the customer. 
+        These indicators track how well you are doing and contribute to your final score. 
         <Table>
             <Tr>
-                <TD class="statusdisplay" width="20%"><span class="emoji">📦</span>Product Readiness</TD>
                 <TD class="statusdisplay" width="20%"><span class="emoji">🔎</span>Problem Statement Clarity</TD>
                 <TD class="statusdisplay" width="20%"><span class="emoji">💭</span>Customer Insight </TD>
                 <TD class="statusdisplay" width="20%"><span class="emoji">💖</span>Team Morale</TD>
                 <TD class="statusdisplay" width="20%"><span class="emoji">💪</span>Business Owner Confidence</TD>
             </Tr>
             <Tr>
-                <TD class="statusdisplay"><span id="product-readiness">None</span> </TD>
                 <TD class="statusdisplay"><span id="problem-statement-clarity">-</span> </TD>
                 <TD class="statusdisplay"><span id="customer-insight">-</span> </TD>
                 <TD class="statusdisplay"><span id="team-morale">-</span></TD>
@@ -79,6 +77,21 @@
                 <input name="score" type="number" id="scoresaver" class="hidden-score-saver" />
                 </label>
 
+                <label>
+                    <input name="psc" type="number" id="pscsaver" class="hidden-score-saver" />
+                </label>
+
+                <label>
+                    <input name="insight" type="number" id="insightsaver" class="hidden-score-saver" />
+                </label>
+
+                <label>
+                    <input name="morale" type="number" id="moralesaver" class="hidden-score-saver" />
+                </label>
+
+                <label>
+                    <input name="boc" type="number" id="bocsaver" class="hidden-score-saver" />
+                </label>
 
                 <input
                   type="submit"

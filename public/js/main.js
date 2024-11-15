@@ -73,7 +73,6 @@ for (let eventday=1; eventday<31; eventday++) {
 // repeated function to show the latest health status
 function updateHealth(){
     //update all health variables one by one
-    document.getElementById("product-readiness").textContent=sessionStorage.getItem("ProductReadiness")
     document.getElementById("problem-statement-clarity").textContent=sessionStorage.getItem("ProblemStatementClarity")
     document.getElementById("customer-insight").textContent=sessionStorage.getItem("CustomerInsight")
     document.getElementById("team-morale").textContent=sessionStorage.getItem("TeamMorale")
@@ -605,7 +604,7 @@ function testProto(){
                 paragraph.innerHTML +="<p class='health-status-growth'>Problem Statement Clarity + 10</p>"
                 changeSSV("ProblemStatementClarity", 10)
             } else {
-                paragraph.innerHTML +="<p> However, the well-written test plan allows the facilitators to quickly pivot towards developing and fleshing out other hypotheses about and alternativee solutions to the problem statement.</p>"
+                paragraph.innerHTML +="<p> However, the well-written test plan allows the facilitators to quickly pivot towards developing and fleshing out other hypotheses about and alternative solutions to the problem statement.</p>"
                 paragraph.innerHTML +="<p class='health-status-growth'>Problem Statement Clarity + 20, Customer Insight + 10</p>"
                 changeSSV("ProblemStatementClarity", 20)
                 changeSSV("CustomerInsight", 10)
@@ -896,4 +895,12 @@ function concludeGame(){
     // send the final score into the score box
     scorereport = document.getElementById("scoresaver")
     scorereport.value=finalscore
+    scorereport = document.getElementById("pscsaver")
+    scorereport.value=ProblemStatementClarity
+    scorereport = document.getElementById("insightsaver")
+    scorereport.value=CustomerInsight
+    scorereport = document.getElementById("moralesaver")
+    scorereport.value=TeamMorale
+    scorereport = document.getElementById("bocsaver")
+    scorereport.value=BusinessOwnerConfidence
 }
