@@ -57,33 +57,33 @@ app.get('/topscores', async function(req, res) {
 // });
 
 // Create a new post
-app.post('/new', async function(req, res) {
+// app.post('/new', async function(req, res) {
     
-    // Try-Catch for any errors
-    try {
-        // Get the title and content from submitted form
-        const { username, score } = req.body;
+//     // Try-Catch for any errors
+//     try {
+//         // Get the title and content from submitted form
+//         const { username, score } = req.body;
 
-        // Reload page if empty title or content
-        if (!username || !score) {
-            console.log("Unable to create new post, no title or content");
-            res.render('pages/new');
-        } else {
-            // Create post and store in database
-            const parsedScore = parseInt(score, 10);
-            const blog = await prisma.post.create({
-                data: { username, score:parsedScore },
-            });
+//         // Reload page if empty title or content
+//         if (!username || !score) {
+//             console.log("Unable to create new post, no title or content");
+//             res.render('pages/new');
+//         } else {
+//             // Create post and store in database
+//             const parsedScore = parseInt(score, 10);
+//             const blog = await prisma.post.create({
+//                 data: { username, score:parsedScore },
+//             });
 
-            // Redirect back to the homepage
-            res.redirect('/topscores');
-        }
-      } catch (error) {
-        console.log(error);
-        res.render('pages/new');
-      }
+//             // Redirect back to the homepage
+//             res.redirect('/topscores');
+//         }
+//       } catch (error) {
+//         console.log(error);
+//         res.render('pages/new');
+//       }
 
-});
+// });
 
 // Save score from home
 app.post('/', async function(req, res) {
