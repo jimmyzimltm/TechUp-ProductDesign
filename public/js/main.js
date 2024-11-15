@@ -124,7 +124,6 @@ function advancetheDay(){
     pastarticle.style.display = "block"
     // advance the day count
     changeSSV("DayX",1)
-    // alert("After = Day " + sessionStorage.getItem("DayX"));
 }
 
 
